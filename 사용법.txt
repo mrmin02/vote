@@ -1,0 +1,11 @@
+Spring boot + React
+
+
+backEnd : Spring boot
+FrontEnd : React
+
+	
+	처음에 한번 : parent -> mvn install
+ 
+  fe -> npm start
+  be/vote -> ./mvnw spring-boot:run
