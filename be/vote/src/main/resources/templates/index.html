@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,15 @@
     <title>react</title>
 </head>
 <body>
+
+    <th:block sec:authorize="isAuthenticated()"><!-- 로그인 되어 있는가 -->
+      <span sec:authentication="principal.username"></span>님 반가워요!
+      <form action="/logout" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <input type="submit" value="Logout">
+      </form>
+    </th:block>
+
     <div id="tt"></div>
     <script src="../assets/tt.js"></script>
     templates 처음화면
@@ -15,10 +24,3 @@
 </body>
 
 </html>
-
-<!-- entry: './app/index.js',
-  output: {
-    path: PATHS.build,
-    filename: 'app-bundle.js',
-    publicPath: "/assets/"
-  }, -->

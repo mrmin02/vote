@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    
+</head>
+<body>
+    
+    <form method="post" action="/auth/register">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div id="register"></div>
+    </form>
+    <script src="../assets/register.js"></script>
+</body>
+</html>

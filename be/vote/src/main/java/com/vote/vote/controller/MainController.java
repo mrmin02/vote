@@ -9,11 +9,12 @@ public class MainController {
 	@RequestMapping("/")
 	public String index() {
 		// System.out.println("/ --> index");
-		return "index.html";
+		return "index";
 	}
 	@RequestMapping("/home")
 	public String home() {
 		// System.out.println("/ --> home");
-		return "home.html";
+		return "home";
 	}
+
 }

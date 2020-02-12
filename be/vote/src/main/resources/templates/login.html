@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<body>
+    <form method="post" th:action="@{/auth}">
+        <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"> -->
+        <div id="login"></div>
+    </form>
+    <script src="../assets/login.js"></script>
+    <a href="/auth/register">회원가입</a>
+    <!-- <session>
+        <form th:action="@{/auth}" method="post">
+			UserID <input type="text" name="username"/><br>
+			Password<input type="password" name="password"><br>
+			<input type="submit" value="Login"/>
+		</form>
+    </session> -->
+</body>
+</html>

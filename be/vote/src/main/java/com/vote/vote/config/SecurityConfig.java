@@ -16,6 +16,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http    
 		.authorizeRequests()     
 			.antMatchers("/").permitAll() // 모든 권한을 줌.=로그인 필요 없음.     
+			.antMatchers("/auth/register").permitAll()
 			// .antMatchers("/posts/**").hasRole("USER")
 			.antMatchers("/home").hasRole("USER")
 //			.antMatchers("/").hasAnyRole("USER","ADMIN")
@@ -24,13 +25,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().authenticated() // 로그인 체크함.     
 			.and()    
 		.formLogin()     
-//			.loginPage("/login") // 이 줄을 지우면 스프링이 제공하는 폼이 출력됨.     
+			.loginPage("/auth") // 이 줄을 지우면 스프링이 제공하는 폼이 출력됨.     
 			.permitAll()     
 			.successHandler(successHandler())     
 			.and()    
 		.logout()    
 			.logoutUrl("/logout")    
-			.logoutSuccessUrl("/login")   
+			.logoutSuccessUrl("/")
 			.invalidateHttpSession(true)    
 			.and()   
 		.csrf() 
@@ -39,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	} 
 	public AuthenticationSuccessHandler successHandler() {
 		SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
-//		System.out.println("성공");
+		// System.out.println("성공");
 		return handler;
 	}
 }

@@ -10,5 +10,5 @@ class Hello extends React.Component {
       }
 }
 
-// export default Hello;
+
 ReactDOM.render(<Hello/>,document.getElementById('test'));

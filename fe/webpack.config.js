@@ -29,7 +29,9 @@ module.exports = {
   entry: {
     home: path.join(__dirname, './app/home.js'),
     tt: path.join(__dirname, './app/tt.js'),
-    t3: path.join(__dirname, './app/t3.js')
+    t3: path.join(__dirname, './app/t3.js'),
+    register: path.join(__dirname,'./app/register.js'),
+    login: path.join(__dirname,'./app/login.js'),
   },
   output: {
     path: PATHS.build,

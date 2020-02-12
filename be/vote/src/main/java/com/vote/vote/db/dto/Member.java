@@ -22,6 +22,18 @@ public class Member{
     @Column
     private String password;
 
+    @Column
+    private String name;
+
+    @Column
+    private String birth;
+
+    @Column
+    private String phone;
+
+    @Column
+    private String email;
+
     public int getId(){
         return id;
     }
@@ -31,15 +43,38 @@ public class Member{
     public String getPassword(){
         return password;
     }
+    public String getName(){
+        return name;
+    }
+    public String getBirth(){
+        return birth;
+    }
+    public String getPhone(){
+        return phone;
+    }
+    public String getEmail(){
+        return email;
+    }
 
     public void setId(int id){
         this.id = id;
     }
-    public void setUserId(String memberId){
+    public void setMemberId(String memberId){
         this.memberId = memberId;
     }
     public void setPassword(String password){
         this.password = password;
     }
-
+    public void setName(String name){
+        this.name = name;
+    }
+    public void setBirth(String birth){
+        this.birth = birth;
+    }
+    public void setPhone(String phone){
+        this.phone = phone;
+    }
+    public void setEmail(String email){
+        this.email = email;
+    }
 }
