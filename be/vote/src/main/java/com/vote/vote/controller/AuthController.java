@@ -18,12 +18,12 @@ public class AuthController {
 
     @RequestMapping(value= {"","/"})
     public String login(){ // 로그인 뷰
-        return "login";
+        return "auth/login";
     }
 
     @RequestMapping(value= {"/register","/register/"})
     public String register(){ // 회원가입 뷰
-        return "register";
+        return "auth/register";
     }
 
     @RequestMapping(value="/register", method=RequestMethod.POST)

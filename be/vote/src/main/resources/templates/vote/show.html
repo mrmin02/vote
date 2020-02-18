@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+th:replace="~{layout::layout(~{::content},_)}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <content>
+        show view
+        <div id="voteShow">
+            <div data-react>123</div>
+        </div>
+        <script src="../assets/voteShow.js"></script>
+        <div th:text="${vote.getTitle()}"></div>
+
+        <!-- <div><img th:src="@{'/uploads/'+${img.getImg1()}}" alt=""></div>
+        <div><img th:src="@{'/uploads/'+${img.getImg2()}}" alt=""></div>
+        <div><img th:src="@{'/uploads/'+${img.getImg3()}}" alt=""></div>
+        <div><img th:src="@{'/uploads/'+${img.getImg4()}}" alt=""></div>
+        <div><img th:src="@{'/uploads/'+${img.getImg5()}}" alt=""></div>
+        <div><img th:src="@{'/uploads/'+${img.getImg6()}}" alt=""></div> -->
+
+    </content>
+</body>
+</html>

@@ -4,16 +4,14 @@ th:replace="~{layout::layout(~{::content},_)}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 </head>
 <body>
     <content>
-        <div id="test"></div>
-        <script src="../assets/home.js"></script>
-        templates
-        <br>
-        <a href="/">처음화면으록 가기</a>
+        <form method="post" enctype="multipart/form-data" action="/vote">
+            <div id="voteCreate"></div>
+            <script src="../assets/voteCreate.js"></script>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        </form>
     </content>
-    
 </body>
 </html>

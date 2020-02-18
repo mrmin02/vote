@@ -32,12 +32,18 @@ module.exports = {
     t3: path.join(__dirname, './app/t3.js'),
     register: path.join(__dirname,'./app/register.js'),
     login: path.join(__dirname,'./app/login.js'),
+    voteIndex: path.join(__dirname,'./app/vote/voteIndex.js'),
+    voteCreate: path.join(__dirname,'./app/vote/voteCreate.jsx'),
+    voteShow: path.join(__dirname,'./app/vote/voteShow.jsx'),
   },
   output: {
     path: PATHS.build,
     filename: '[name].js',
     publicPath: "/assets/"
   },
+  // resolve:{
+  //   extensions: ['','.js','.jsx']
+  // },
   devServer: {
     hot: true,
     historyApiFallback: true,
@@ -62,6 +68,17 @@ module.exports = {
         }
       },
       {
+        test: /.jsx$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          query: {
+            presets: ['env', 'react']
+          }
+        } 
+      //   
+      },
+      {
         test: /\.css$/,
         use: [
           'style-loader',
@@ -80,7 +97,7 @@ module.exports = {
           'file-loader'
         ]
       }
-    ]
+    ],
   },
   devtool: 'inline-source-map',
   plugins: [
