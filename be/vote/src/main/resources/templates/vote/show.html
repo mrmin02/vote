@@ -14,12 +14,13 @@ th:replace="~{layout::layout(~{::content},_)}">
         <script src="../assets/voteShow.js"></script>
         <div th:text="${vote.getTitle()}"></div>
 
-        <!-- <div><img th:src="@{'/uploads/'+${img.getImg1()}}" alt=""></div>
-        <div><img th:src="@{'/uploads/'+${img.getImg2()}}" alt=""></div>
-        <div><img th:src="@{'/uploads/'+${img.getImg3()}}" alt=""></div>
-        <div><img th:src="@{'/uploads/'+${img.getImg4()}}" alt=""></div>
-        <div><img th:src="@{'/uploads/'+${img.getImg5()}}" alt=""></div>
-        <div><img th:src="@{'/uploads/'+${img.getImg6()}}" alt=""></div> -->
+        <div th:each="item : ${items}">
+            <div th:if="${item.name}!='0' ">
+                <img th:src="@{'/uploads/'+${item.img}}"/>
+                <div th:text="${item.name}"></div>
+            </div>
+        </div>
+        
 
     </content>
 </body>

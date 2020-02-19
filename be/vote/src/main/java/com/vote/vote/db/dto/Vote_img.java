@@ -105,4 +105,18 @@ public class Vote_img{
         this.img6 = img6;
     }
 
+
+    public ArrayList<String> getAllImg(){
+        ArrayList<String> imgs = new ArrayList<String>();
+
+        imgs.add(img1);
+        imgs.add(img2);
+        imgs.add(img3);
+        imgs.add(img4);
+        imgs.add(img5);
+        imgs.add(img6);
+
+        return imgs;
+    }
+
 }

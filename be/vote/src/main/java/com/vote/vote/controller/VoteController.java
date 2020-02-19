@@ -11,6 +11,8 @@ import com.vote.vote.repository.Vote_imgJpaRepository;
 import com.vote.vote.repository.Vote_nameJpaRepository;
 import com.vote.vote.service.StorageService;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -72,10 +74,10 @@ public class VoteController {
 		}
 
 		while(fileName.size() != 6){
-			fileName.add("");
+			fileName.add("0");
 		}
 		while(names.size() != 6){
-			names.add("");
+			names.add("0");
 		}
 		Vote_img img_data = new Vote_img(fileName);
 		
@@ -103,13 +105,29 @@ public class VoteController {
 
 	@RequestMapping(value={"/{voteId}","/{voteId}/"})
 	public String show(Model model, @PathVariable("voteId") int voteId){
+
 		Vote vote = voteRepository.findById(voteId);
 		Vote_img img = vote_imgRepository.findById(vote.getImg());
 		Vote_name name = vote_nameRepository.findById(vote.getName());
 
+
+		JSONArray array = new JSONArray();
+		
+
+		ArrayList<String> imgs = img.getAllImg();
+		ArrayList<String> names = name.getAllName();
+
+		
+		
+		for(int i=0; i<6;i++){
+			JSONObject item = new JSONObject();
+			item.put("name", names.get(i));
+			item.put("img",imgs.get(i));
+			array.add(item);
+		}
+			
 		model.addAttribute("vote",vote);
-		model.addAttribute("img",img);
-		model.addAttribute("name",name);
+		model.addAttribute("items",array);
 
 		return "vote/show";
 	}

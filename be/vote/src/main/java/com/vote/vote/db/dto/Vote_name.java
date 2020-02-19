@@ -101,4 +101,17 @@ public class Vote_name{
         this.name6 = name6;
     }
 
+
+    public ArrayList<String> getAllName(){
+        ArrayList<String> name = new ArrayList<String>();
+
+        name.add(name1);
+        name.add(name2);
+        name.add(name3);
+        name.add(name4);
+        name.add(name5);
+        name.add(name6);
+
+        return name;
+    }
 }

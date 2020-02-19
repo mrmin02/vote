@@ -11,6 +11,7 @@ class VoteShow extends React.Component {
         return (
             <div>
                 Vote Show React
+                
                 <div>
                     <a href="/vote">투표 목록</a>
                 </div>
