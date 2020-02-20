@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 // import ColorButton from '../items/colorButton';
-import ColorButton from '../items/colorButton.jsx';
+// import ColorButton from '../items/colorButton.jsx';
 class VoteCreate extends React.Component {
 
   
@@ -98,7 +98,7 @@ class VoteCreate extends React.Component {
                 <a href="/vote">목록</a>
               </div>
               <input type="submit" value="투표 생성"/>
-              <ColorButton/>
+              {/* <ColorButton/> */}
           </div>
         );
       }

@@ -63,7 +63,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            presets: ['env', 'react'],
+            presets: ['env', 'react','babel-polyfill'],
           }
         }
       },
@@ -73,7 +73,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           query: {
-            presets: ['env', 'react']
+            presets: ['env', 'react','babel-polyfill']
           }
         } 
       //   
@@ -102,7 +102,13 @@ module.exports = {
   devtool: 'inline-source-map',
   plugins: [
     // new CleanWebpackPlugin([PATHS.build])
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    // ["@babel/plugin-transform-runtime"]
+    // ["@babel/plugin-transform-runtime",
+    //   {
+    //     "regenerator": true
+    //   }
+    // ]
     
   ]
 };
