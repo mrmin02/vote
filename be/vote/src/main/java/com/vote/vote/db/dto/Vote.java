@@ -27,7 +27,7 @@ public class Vote{
     @Column 
     private int name;
 
-    @Column 
+    @Column(nullable=true)
     private String address;
 
     @Column

@@ -34,7 +34,9 @@
     "@bit/react-bootstrap.react-bootstrap.card": "^1.0.0",
     "@bit/react-bootstrap.react-bootstrap.internal.style-links": "^1.0.0",
     "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
     "react": "^16.0.0",
+    "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.0.0"
   }
 }

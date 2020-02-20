@@ -24,6 +24,14 @@ public class Voter{
     @Column 
     private int state;
 
+
+    // @Column 
+    // private String privateKey;
+
+    // @Column 
+    // private String address;
+
+
     public int getId(){
         return id;
     }
@@ -36,6 +44,15 @@ public class Voter{
     public int getState(){
         return state;
     }
+
+    // public String getPrivateKey(){
+    //     return privateKey;
+    // }
+    // public String address(){
+    //     return address;
+    // }
+
+
 
     public void setId(int id){
         this.id = id;
@@ -50,6 +67,12 @@ public class Voter{
         this.state = state;
     }
 
-    
+    // public void setPrivateKey(String privateKey){
+    //     this.privateKey = privateKey;
+    // }
+    // public void setAddress(String address){
+    //     this.address = address;
+    // }
+
 
 }

@@ -34,6 +34,13 @@ public class Member{
     @Column
     private String email;
 
+    @Column(nullable=true)
+    private String privateKey;
+
+    @Column(nullable=true)
+    private String address;
+
+
     public int getId(){
         return id;
     }
@@ -56,6 +63,15 @@ public class Member{
         return email;
     }
 
+    public String getPrivateKey(){
+        return privateKey;
+    }
+    public String getAddress(){
+        return address;
+    }
+
+
+
     public void setId(int id){
         this.id = id;
     }
@@ -76,5 +92,12 @@ public class Member{
     }
     public void setEmail(String email){
         this.email = email;
+    }
+
+    public void setPrivateKey(String privateKey){
+        this.privateKey = privateKey;
+    }
+    public void setAddress(String address){
+        this.address = address;
     }
 }

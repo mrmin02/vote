@@ -6,7 +6,10 @@ import './voteShow.css'
 const axios = require('axios');
 
 var url = document.location.href;
-var param = url.substr(url.length-1,1);
+const num = url.split('/');
+var param = num[num.length-1];
+// url.substr(url.length-1,1);
+
 const regeneratorRuntime = require("regenerator-runtime");
 
 
@@ -61,7 +64,7 @@ class VoteShow extends React.Component {
 /* <ItemCard img={vote.img} name={vote.name}/> */
 function Show(){
         return(
-            <div>
+            <div key="show">
                 <div><a href="/vote">목록으로 가기</a></div>
                 <VoteShow/>
                 
