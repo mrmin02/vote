@@ -103,5 +103,6 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin([PATHS.build])
     new webpack.HotModuleReplacementPlugin()
+    
   ]
 };

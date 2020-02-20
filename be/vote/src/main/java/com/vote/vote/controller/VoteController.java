@@ -14,6 +14,7 @@ import com.vote.vote.service.StorageService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -106,6 +108,38 @@ public class VoteController {
 	@RequestMapping(value={"/{voteId}","/{voteId}/"})
 	public String show(Model model, @PathVariable("voteId") int voteId){
 
+		// Vote vote = voteRepository.findById(voteId);
+		// Vote_img img = vote_imgRepository.findById(vote.getImg());
+		// Vote_name name = vote_nameRepository.findById(vote.getName());
+
+
+		// JSONArray array = new JSONArray();
+		
+
+		// ArrayList<String> imgs = img.getAllImg();
+		// ArrayList<String> names = name.getAllName();
+
+		
+		
+		// for(int i=0; i<6;i++){
+		// 	JSONObject item = new JSONObject();
+		// 	item.put("name", names.get(i));
+		// 	item.put("img",imgs.get(i));
+		// 	array.add(item);
+		// }
+			
+		// model.addAttribute("vote",vote);
+		// model.addAttribute("items",array);
+
+		return "vote/show";
+	}
+
+	@RequestMapping(value={"/axios/{voteId}","/axios/{voteId}/"},
+	method=RequestMethod.GET,
+	produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public JSONArray showVoteAxios(@PathVariable("voteId") int voteId){
+		// System.out.println("aaa");
 		Vote vote = voteRepository.findById(voteId);
 		Vote_img img = vote_imgRepository.findById(vote.getImg());
 		Vote_name name = vote_nameRepository.findById(vote.getName());
@@ -126,9 +160,9 @@ public class VoteController {
 			array.add(item);
 		}
 			
-		model.addAttribute("vote",vote);
-		model.addAttribute("items",array);
-
-		return "vote/show";
+		// return array;
+		return array;
 	}
+
+
 }

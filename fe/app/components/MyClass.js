@@ -40,11 +40,11 @@ class MyClass extends React.Component {
         return ( 
             <div>
                 <h1>Student List</h1>
-                <ul>
+                {/* <ul>
                     {this.state.students.map( (student, i) =>{
                         return (<StdList name={student.name} key={i} major={student.major} score={student.score} />)
                     })}
-                </ul>
+                </ul> */}
             </div>
         )
     }
