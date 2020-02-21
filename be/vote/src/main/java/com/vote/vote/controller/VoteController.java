@@ -266,16 +266,20 @@ public class VoteController {
 	produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	 // 동기 처리      // 반대 개념 : 비동기 처리
-	public synchronized JSONObject showResultAxios(@PathVariable("voteId") int voteId) {
+	public synchronized JSONArray showResultAxios(@PathVariable("voteId") int voteId) {
 
 		Vote vote = voteRepository.findById(voteId);
+		Vote_name voteName = vote_nameRepository.findById(vote.getName());
 
-		JSONObject json = new JSONObject();
+		JSONArray json = new JSONArray();
 		
 		try {
 			JSONObject result = klaytn.load(vote.getAddress());
 			System.out.println("result: " +result);
-			json.put("result",result);
+			json.add(0, result);
+			json.add(1,vote.getCount());
+			json.add(2,voteName.getAllName());
+			
 		} catch (Exception e) {
 			System.out.println("클레이튼 오류 발생: 결과 출력 오류");
 		}
