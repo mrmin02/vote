@@ -22,6 +22,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -32,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 
 
 @Controller
@@ -231,8 +232,9 @@ public class VoteController {
 					try {
 						JSONObject message = klaytn.klaytnSend(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()));							
 						voter.setState(1);
+						voter.setHash(message.get("hash").toString());
 						voterRepository.saveAndFlush(voter);//투표 완료.
-						result.put("hash",message.get("message").toString());
+						// result.put("hash",message.get("message").toString());
 					} catch (Exception e) {
 						System.out.println("클레이튼 오류 발생: 클레이튼으로 선택 사항 전달&처리에서 문제발생.");						
 					}
@@ -251,4 +253,34 @@ public class VoteController {
 
 		return result;
 	}
+
+
+	@RequestMapping(value={"/result/{voteId}","/result/{voteId}/"}, 
+	method=RequestMethod.GET)
+	public String showResult(@PathVariable("voteId") int voteId) {
+
+		return "/vote/result";
+	}
+	@RequestMapping(value={"/result/axios/{voteId}","/result/axios/{voteId}/"}, 
+	method=RequestMethod.GET,
+	produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	 // 동기 처리      // 반대 개념 : 비동기 처리
+	public synchronized JSONObject showResultAxios(@PathVariable("voteId") int voteId) {
+
+		Vote vote = voteRepository.findById(voteId);
+
+		JSONObject json = new JSONObject();
+		
+		try {
+			JSONObject result = klaytn.load(vote.getAddress());
+			System.out.println("result: " +result);
+			json.put("result",result);
+		} catch (Exception e) {
+			System.out.println("클레이튼 오류 발생: 결과 출력 오류");
+		}
+
+		return json;
+	}
+	
 }

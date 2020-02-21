@@ -24,6 +24,9 @@ public class Voter{
     @Column 
     private int state;
 
+    @Column(nullable=true)
+    private String hash;
+
 
     // @Column 
     // private String privateKey;
@@ -44,14 +47,9 @@ public class Voter{
     public int getState(){
         return state;
     }
-
-    // public String getPrivateKey(){
-    //     return privateKey;
-    // }
-    // public String address(){
-    //     return address;
-    // }
-
+    public String getHash(){
+        return hash;
+    }
 
 
     public void setId(int id){
@@ -66,13 +64,10 @@ public class Voter{
     public void setState(int state){
         this.state = state;
     }
-
-    // public void setPrivateKey(String privateKey){
-    //     this.privateKey = privateKey;
-    // }
-    // public void setAddress(String address){
-    //     this.address = address;
-    // }
+    
+    public void setHash(String hash){
+        this.hash = hash;
+    }
 
 
 }

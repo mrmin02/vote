@@ -2,6 +2,7 @@ import React, {Component}from 'react'
 import ReactDOM from 'react-dom';
 const regeneratorRuntime = require("regenerator-runtime");
 const axios = require('axios');
+
 class VoteIndex extends Component {
     constructor(props){
         super(props);
@@ -10,20 +11,20 @@ class VoteIndex extends Component {
 
     async componentDidMount(){
         let {data : title} = await axios.get('/vote/axios');
-        console.log(title);
+        // console.log(title);
 
         this.setState({title});
         
-        // this.setState({title});
-        // console.log(this.state.user);
-        console.log(this.state.title);
+        // console.log(this.state.title);
     }
     render() {
         const { title } = this.state;
         return title.map((tt,index)=>{
             return (
-                <div>
+                <div key={'div'+index}>
                     <a href={"/vote/"+tt.id} key={index}>{tt.title}</a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href={'/vote/result/'+tt.id}>실시간 투표 결과</a>
                 </div>
             )
         })

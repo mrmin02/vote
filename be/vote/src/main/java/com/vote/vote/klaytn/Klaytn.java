@@ -360,7 +360,7 @@ public class Klaytn {
 
 
 
-	public void load() throws Exception{// 배포된 스마트 컨트렉트의 uint List 출력, count 출력 
+	public JSONObject load(String address) throws Exception{// 배포된 스마트 컨트렉트의 uint List 출력, count 출력 
 			Caver caver = Caver.build(Caver.BAOBAB_URL);
 			
 			KlayCredentials credentials = KlayCredentials.create("0x26efd4a0c62543128ac05b4f3b29668d43c18a43531b5aecb85e387dd1dc0bd0");
@@ -370,38 +370,21 @@ public class Klaytn {
 //					"0x7b6c602b7e8dde60f16ec0684421d69868215f25",// 콘트렉트 adress 
 //					"0x3970bec0c994b437d4bb2ccc277e965ce24f9ff6",
 //					"0xb9be5c12aaf13a18e866883fccfa3327283d4891",
-					"0x3caef473574f6a9de0501d3073c5300e5a05ed1d",
+					// "0x3caef473574f6a9de0501d3073c5300e5a05ed1d",
+					address,
 					caver, 
 					credentials, 
 					ChainId.BAOBAB_TESTNET,
 					new DefaultGasProvider());
-			
-//			KlayTransactionReceipt.TransactionReceipt transactionReceipt = 
-//					eeToken.transfer(BigInteger.ZERO).send();
-//			String txHash = transactionReceipt.getTransactionHash();
-//			System.out.println("After"+eeToken.getBalance());
-//			
-//			System.out.println("txHash : " + txHash);
-			
-//			Function function = new Function(
-//					Test6.FUNC_GETDATA,  // FUNC_TRANSFER = "transfer"
-//			        Arrays.asList(
-//			        		
-//			        		),  // inputParameters
-//			        Collections.emptyList()  // outputParameters          
-//			);
-//			String data = FunctionEncoder.encode(function);
-//			System.out.println(data);
-//			System.out.println(eeToken.getData());
-			
-			
+				
 			RemoteCall<List> remoteCall = eeToken.getData();
-//			remoteCall.send();
-//			System.out.println(remoteCall);
+
 			System.out.println("Vote List : "+remoteCall.send());
 			
 			System.out.println("Count : "+eeToken.getCount().send());
-//			List result = remoteCall.send();
-//			System.out.println(result);
+
+			JSONObject json = new JSONObject();
+			json.put("result",remoteCall.send());
+			return json;
 		}
 }

@@ -27,14 +27,16 @@ const PATHS = {
 
 module.exports = {
   entry: {
+
     home: path.join(__dirname, './app/home.js'),
     tt: path.join(__dirname, './app/tt.js'),
-    t3: path.join(__dirname, './app/t3.js'),
     register: path.join(__dirname,'./app/register.js'),
     login: path.join(__dirname,'./app/login.js'),
     voteIndex: path.join(__dirname,'./app/vote/voteIndex.jsx'),
     voteCreate: path.join(__dirname,'./app/vote/voteCreate.jsx'),
     voteShow: path.join(__dirname,'./app/vote/voteShow.jsx'),
+    voteResult: path.join(__dirname,'./app/vote/voteResult.jsx'),
+
   },
   output: {
     path: PATHS.build,

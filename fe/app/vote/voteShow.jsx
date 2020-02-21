@@ -51,7 +51,7 @@ class VoteShow extends React.Component {
         return votes.map((vote,index)=>{
             if (vote.name != 0){
                 return (
-                    <div key={vote.name} className="card_div"> 
+                    <div key={vote.name+index} className="card_div"> 
                         <ItemCard key={vote.img} img={vote.img} name={vote.name} event={this.sendSelect.bind(this,index)}/>  
                     </div>
                 )
@@ -60,11 +60,9 @@ class VoteShow extends React.Component {
     }
 }
 
-/* <MakeCard data={vote} /> */
-/* <ItemCard img={vote.img} name={vote.name}/> */
 function Show(){
         return(
-            <div key="show">
+            <div>
                 <div><a href="/vote">목록으로 가기</a></div>
                 <VoteShow/>
                 
