@@ -1,7 +1,7 @@
 import React ,{Component} from 'react';
 import { Chart } from '@bit/primefaces.primereact.chart';
 
-const data = {
+var data = {
   labels: ['A', 'B', 'C','aa'],
   datasets: [
     {
@@ -15,21 +15,14 @@ const data = {
 class CircleChart extends Component{
     constructor(props){
         super(props)
-        // var a= [] ;
-        // a = this.props.title
-        // console.log();
-        this.props.title.push("asd")
-        console.log(   this.props.title  );  //  []  0:--   
-        // console.log(;
-      
-        console.log(data.labels); //   ["aa","aa","aaa"]     ->  0: aa 1: bbb
-        // data.labels = this.props.title;
-        // console.log(data.labels);
+        console.log("CircleChart : constructor")
     }
+
     render(){
+      console.log("CircleChart : render")
         return(
             <div style={{ width: 400 }}>
-                <Chart type='pie' data={data}/>
+                <Chart type='pie' data={this.props.data}/>
             </div>
         )
     }

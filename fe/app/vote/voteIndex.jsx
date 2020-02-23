@@ -11,11 +11,9 @@ class VoteIndex extends Component {
 
     async componentDidMount(){
         let {data : title} = await axios.get('/vote/axios');
-        // console.log(title);
 
         this.setState({title});
         
-        // console.log(this.state.title);
     }
     render() {
         const { title } = this.state;

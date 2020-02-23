@@ -6,6 +6,7 @@ import ReactBootstrapStyle from '@bit/react-bootstrap.react-bootstrap.internal.s
 class ItemCard extends Component {
 	constructor(props){
 		super(props);
+		console.log(this.props)
     }
 	render() {
 		return (

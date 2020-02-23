@@ -275,8 +275,9 @@ public class VoteController {
 		
 		try {
 			JSONObject result = klaytn.load(vote.getAddress());
-			System.out.println("result: " +result);
+			// System.out.println("result: " +result);
 			json.add(0, result);
+
 			json.add(1,vote.getCount());
 			json.add(2,voteName.getAllName());
 			

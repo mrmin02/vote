@@ -10,58 +10,80 @@ const num = url.split('/');
 var param = num[num.length-1];
 
 
+var dataStore = { 
+    vote:{"1":0,"2":0,"3":0,"4":0,"5":0},
+    title:[], data:[]
+  }
+var title = [];
 
-var data= new Array();
-var title=new Array(); 
+var data = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56','#FFCE56','#FFCE56'],
+        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56','#FFCE56','#FFCE56']
+      }
+    ]
+  };
+
 
 class VoteResult extends Component {
     
     constructor(props){
         super(props);
-        this.state = { vote:{"1":0,"2":0,"3":0,"4":0,"5":0},count:{},title:{} }       
-
+        console.log("VoteResult : constructor")
+        this.state = { data:{} }       
     }
-
+    
     async componentDidMount(){
-        const {data: json} = await axios.get('/vote/result/axios/'+param);
-        
+        console.log("VoteResult : componentDidMount")
+        const {data: json} =  await axios.get('/vote/result/axios/'+param);
+
+ 
         json[0]["result"].map(num=>{
             switch ( num ) {
                 case 1:
-                  this.state.vote["1"] ++;
+                  dataStore.vote["1"] ++;
                   break;
                 case 2:
-                    this.state.vote["2"] ++;
+                    dataStore.vote["2"] ++;
                   break;
                 case 3:
-                    this.state.vote["3"] ++;
+                    dataStore.vote["3"] ++;
                     break;
                 case 4:
-                    this.state.vote["4"] ++;
+                    dataStore.vote["4"] ++;
                     break;
                 case 5:
-                    this.state.vote["5"] ++;
+                    dataStore.vote["5"] ++;
                     break;
               }
         });
 
+        // const count = json[1];// 투표 선택지 개수
 
-        this.state.count = json[1];// 투표 선택지 개수
-        this.state.title = json[2];
-        // console.log(this.state);
+        title = json[2];
 
-        for(var i = 0; i<this.state.count; i++){
-            data.push(this.state.vote[i+1]);
-            title.push(this.state.title[i]);
+        for(var i = 0; i<json[1]; i++){
+            data.datasets[0].data.push(dataStore.vote[i+1]);
+            data.labels.push(title[i]);
         }
 
+        // this.state.title = dataStore.title
+        // this.state.data = dataStore.data
 
+        this.setState({data})
     }
 
     render() {
+        console.log("VoteResult : render")
+        console.log("this.state: "+this.state.data)
+        const {data} = this.state;
+        console.log(data);
         return(
             <div>
-                <CircleChart data={data} title={title}/>
+                <CircleChart data={data} />
             </div>
         )
       }
@@ -70,6 +92,7 @@ class Result extends Component{
     render(){
         return(
             <div>
+                <a href="/vote">목록</a>
                 실시간 투표 결과
                 <br/><br/><br/>
                 <VoteResult/>
@@ -80,4 +103,6 @@ class Result extends Component{
 
 
 ReactDOM.render(<Result/>,document.getElementById('voteResult'));
+
+
 

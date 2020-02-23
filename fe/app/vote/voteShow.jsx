@@ -21,9 +21,10 @@ class VoteShow extends React.Component {
 
     async componentDidMount(){
         let {data : votes} = await axios.get('/vote/axios/'+param);
-        // console.log(votes);
+        
         this.setState({votes});
         // console.log(this.state);
+        
     }
 
     sendSelect(index){
@@ -47,7 +48,7 @@ class VoteShow extends React.Component {
 
     render() {
         const { votes } = this.state
-
+        console.log(votes);
         return votes.map((vote,index)=>{
             if (vote.name != 0){
                 return (
