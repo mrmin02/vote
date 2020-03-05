@@ -36,6 +36,7 @@ module.exports = {
     voteCreate: path.join(__dirname,'./app/vote/voteCreate.jsx'),
     voteShow: path.join(__dirname,'./app/vote/voteShow.jsx'),
     voteResult: path.join(__dirname,'./app/vote/voteResult.jsx'),
+    layout: path.join(__dirname,'./app/layout/layout.jsx'),
 
   },
   output: {

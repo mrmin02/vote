@@ -9,7 +9,7 @@ th:replace="~{layout::layout(~{::content},_)}">
     <content>
         <form method="post" enctype="multipart/form-data" action="/vote">
             <div id="voteCreate"></div>
-            <script src="../assets/voteCreate.js"></script>
+            <script src="/assets/voteCreate.js"></script>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
         </form>
     </content>

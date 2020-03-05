@@ -18,7 +18,7 @@ class VoteCreate extends React.Component {
       var defaultNum = 2;
       var count = num.options[num.selectedIndex].value - defaultNum;
 
-      var div = document.getElementById("input_data");
+      var div = document.getElementById("input_data_event");
       div.innerHTML = "";
       for(var i=0;i<count;i++){
         var tagNum = i+3;
@@ -89,7 +89,7 @@ class VoteCreate extends React.Component {
                   이미지 첨부: <input type="file" name="file" required/><br/>  
                   <input type="text" name="name" required/><br/>
                   {/* <textarea name="content" id="" cols="30" rows="10" required></textarea> */}
-                  <div id="input_data">
+                  <div id="input_data_event">
                   </div>
                 </div>
 

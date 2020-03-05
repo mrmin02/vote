@@ -14,7 +14,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override  
 	protected void configure(HttpSecurity http) throws Exception{   
 		http    
-		.authorizeRequests()     
+		.authorizeRequests()    
+			.antMatchers("/css/**").permitAll() //프론트 권한
+			.antMatchers("/vendor/**").permitAll() //프론트 권한
+			.antMatchers("/js/**").permitAll() // 프론트 권한
+			.antMatchers("/img/**").permitAll() // 프론트 권한
 			.antMatchers("/").permitAll() // 모든 권한을 줌.=로그인 필요 없음.     
 			.antMatchers("/auth/register").permitAll()
 			// .antMatchers("/posts/**").hasRole("USER")
