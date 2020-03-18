@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+th:replace="~{layout::layout(~{::content},_)}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <content>
+        스트리밍
+        <!-- <div id="voteIndex"></div>
+        <script src="/assets/voteIndex.js"></script> -->
+        <!-- <a href="/vote/create">새로운 투표 만들기</a> -->
+        <!-- 게시글
+        <ul>  
+            <li th:each="vote: ${votes}"><a href="/" th:href="@{/vote/{voteId}(voteId=${vote.getId()})}"><p th:text="${vote.getTitle()}"></p></a></li> 
+        </ul> -->
+        <!-- <iframe width="560" height="315" src="https://www.youtube.com/watch?v=yymAgNokgLo" frameborder="0" allowfullscreen> -->
+        </iframe>
+        <iframe width="1280" height="720" src="https://www.youtube.com/embed/yymAgNokgLo?autoplay=1&mute=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        </iframe>
+    </content>
+</body>
+</html>

@@ -19,19 +19,19 @@ public class Member{
     @Column
     private String memberId;
 
-    @Column
+    @Column(nullable=true)
     private String password;
 
     @Column
     private String name;
 
-    @Column
+    @Column(nullable=true)
     private String birth;
 
-    @Column
+    @Column(nullable=true)
     private String phone;
 
-    @Column
+    @Column(nullable=true)
     private String email;
 
     @Column(nullable=true)
@@ -40,6 +40,8 @@ public class Member{
     @Column(nullable=true)
     private String address;
 
+    @Column(nullable=true)
+    private String img;
 
     public int getId(){
         return id;
@@ -68,6 +70,10 @@ public class Member{
     }
     public String getAddress(){
         return address;
+    }
+
+    public String getImg(){
+        return img;
     }
 
 
@@ -99,5 +105,8 @@ public class Member{
     }
     public void setAddress(String address){
         this.address = address;
+    }
+    public void setImg(String img){
+        this.img = img;
     }
 }

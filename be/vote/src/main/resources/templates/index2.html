@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 
 <head>
     <!--
@@ -49,7 +49,7 @@
                     <a class="nav-link" href="/vote">Vote</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/#">blog</a>
+                    <a class="nav-link" href="/stream">스트리밍</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/#">contact</a>
@@ -79,7 +79,14 @@
 		<p>
 			<span class="fs-16 primary-color">(+68) 120034509</span>
 		</p>
-		<p>info@yourdomain.com</p>
+        <p>info@yourdomain.com</p>
+        <th:block sec:authorize="isAuthenticated()"><!-- 로그인 되어 있는가 -->
+            <span sec:authentication="principal"></span>님 반가워요!
+            <form action="/logout" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <input type="submit" value="Logout">
+            </form>
+        </th:block>
 	</div>
 </div><div id="side-search" class="sidenav">
 	<a href="javascript:void(0)" id="side-search-close">&times;</a>

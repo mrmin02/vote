@@ -22,8 +22,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -62,8 +61,10 @@ public class VoteController {
 	public Klaytn klaytn = new Klaytn();
 
 	@RequestMapping(value={"","/"}, method=RequestMethod.GET)
-	public String index(Model model) {
+	public String index(Model model, Principal user) {
 		// model.addAttribute("votes",voteRepository.findAll());
+		
+		System.out.println(user.getName());
 		return "vote/index";
 	}
 	@RequestMapping(value={"/axios","/axios/"})
