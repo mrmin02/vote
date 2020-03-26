@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
 xmlns:sec="http://www.thymeleaf.org/extras/spring-secutiry"
-th:fragment="layout(content,js)">
+th:fragment="layout(content,js,title)">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,13 +37,14 @@ th:fragment="layout(content,js)">
         <a href="javascript:void(0)" id="side-nav-close">&times;</a>
         
         <div class="sidenav-content">
-            <p>
-                Kuncen WB1, Wirobrajan 10010, DIY
-            </p>
-            <p>
-                <span class="fs-16 primary-color">(+68) 120034509</span>
-            </p>
-            <p>info@yourdomain.com</p>
+            <th:block sec:authorize="isAuthenticated()"><!-- 로그인 되어 있는가 -->
+            <span sec:authentication="principal.username"></span>님 반가워요!
+            <form action="/logout" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <input type="submit" value="Logout">
+            <a href="/userInfo">내 정보 및 관리</a>
+            </form>
+        </th:block>
         </div>
     </div>	<div id="side-search" class="sidenav">
         <a href="javascript:void(0)" id="side-search-close">&times;</a>
@@ -85,12 +86,12 @@ th:fragment="layout(content,js)">
                         <a class="nav-link" href="/#">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a id="side-search-open" class="nav-link" href="#">
+                        <a id="side-search-open" class="nav-link">
                             <span class="lnr lnr-magnifier"></span>
                         </a>
                     </li>
                      <li class="nav-item only-desktop">
-                        <a class="nav-link" id="side-nav-open" href="#">
+                        <a class="nav-link" id="side-nav-open">
                             <span class="lnr lnr-menu"></span>
                         </a>
                     </li>
@@ -134,7 +135,8 @@ th:fragment="layout(content,js)">
     <div class="jumbotron jumbotron-single d-flex align-items-center" >
         <!-- style="background-image: url(img/bg.jpg)" -->
       <div class="container text-center">
-        <h1 class="display-2 mb-4">실시간 투표</h1>
+        <h1 class="display-2 mb-4" th:text="${title}"></h1>
+        
       </div>
     </div>	
     
@@ -195,6 +197,5 @@ th:fragment="layout(content,js)">
          
         <!-- Main JS -->
         <script src="/js/app.min.js "></script>
-        <script src="//localhost:35729/livereload.js"></script>
 </body>
 </html>

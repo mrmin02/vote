@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import org.springframework.security.core.userdetails.User;
 
 @Controller
 @RequestMapping("/auth")
@@ -100,16 +101,27 @@ public class AuthController {
         }
         // 회원가입 된 후  ( 이미 되어 있거나 방금 코드로 로그인 된 경우.)
 
+       
+        // UserDetails.
+//			session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+        UserDetails user = 
+        User
+        .withUsername(userInfo.get("id").toString())
+            .password(userInfo.get("id").toString())
+            .username(userInfo.get("id").toString())
+            .authorities(AuthorityUtils.createAuthorityList("USER"))
+            .roles("USER")
+        .build();
+
         final HttpSession session = request.getSession();
         final SecurityContext securityContext = SecurityContextHolder.getContext();
         final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-            userInfo.get("id").toString(), "null", AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_SOCIAL"));
+            user, "null", AuthorityUtils.commaSeparatedStringToAuthorityList("USER"));
 
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         securityContext.setAuthentication(authentication);
         SecurityContextHolder.setContext(securityContext);
-
-//			session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+        
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
 
         return "redirect:/";
