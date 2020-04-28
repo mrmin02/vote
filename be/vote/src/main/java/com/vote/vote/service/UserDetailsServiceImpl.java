@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-
+import com.vote.vote.config.CustomUserDetails;
 import com.vote.vote.db.dto.Member;
 
 
@@ -30,15 +30,27 @@ public class UserDetailsServiceImpl implements UserDetailsService{
             throw new UsernameNotFoundException("Invalid username");
         }
 
-        UserDetails user = 
-				User
-				.withUsername(entityUser.getMemberId())
-					.password(entityUser.getPassword())
-					.username(entityUser.getMemberId())
-					.authorities(AuthorityUtils.createAuthorityList("USER"))
-					.roles("USER")
-				.build();
-        return user;
+        // UserDetails user = 
+		// 		User
+		// 		.withUsername(entityUser.getMemberId())
+		// 			.password(entityUser.getPassword())
+		// 			.username(entityUser.getMemberId())
+		// 			.authorities(AuthorityUtils.createAuthorityList("USER"))
+		// 			.roles("USER")
+        // 		.build();
+        
+        CustomUserDetails user2 = new CustomUserDetails();
+        user2.setID(entityUser.getMemberId());
+        user2.setPASSWORD(entityUser.getPassword());
+        user2.setIMG(entityUser.getImg());
+        user2.setNAME(entityUser.getName());
+        user2.setAUTHORITY("USER");
+        //  = (CustomUserDetails)usert;
+        
+        // user.setIMG("img");
+        // user.setNAME("이름 출력되나?");
+
+        return user2;
     }
 
     

@@ -40,33 +40,35 @@ class VoteResult extends Component {
         console.log("VoteResult : componentDidMount")
         const {data: json} =  await axios.get('/vote/result/axios/'+param);
 
- 
-        json[0]["result"].map(num=>{
-            switch ( num ) {
-                case 1:
-                  dataStore.vote["1"] ++;
-                  break;
-                case 2:
-                    dataStore.vote["2"] ++;
-                  break;
-                case 3:
-                    dataStore.vote["3"] ++;
-                    break;
-                case 4:
-                    dataStore.vote["4"] ++;
-                    break;
-                case 5:
-                    dataStore.vote["5"] ++;
-                    break;
-              }
-        });
+        console.log("--------------------"+json[0]["result"]);
+        console.log("---------------------2"+json[2]);
+        // json[0]["result"].map(num=>{
+        //     switch ( num ) {
+        //         case 1:
+        //           dataStore.vote["1"] ++;
+        //           break;
+        //         case 2:
+        //             dataStore.vote["2"] ++;
+        //           break;
+        //         case 3:
+        //             dataStore.vote["3"] ++;
+        //             break;
+        //         case 4:
+        //             dataStore.vote["4"] ++;
+        //             break;
+        //         case 5:
+        //             dataStore.vote["5"] ++;
+        //             break;
+        //       }
+        // });
 
         // const count = json[1];// 투표 선택지 개수
 
         title = json[2];
 
         for(var i = 0; i<json[1]; i++){
-            data.datasets[0].data.push(dataStore.vote[i+1]);
+            // data.datasets[0].data.push(dataStore.vote[i+1]);
+            data.datasets[0].data.push(json[0]["result"][i]);
             data.labels.push(title[i]);
         }
 

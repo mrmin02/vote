@@ -113,11 +113,11 @@ public class VoteController {
 		ArrayList<String> fileName = new ArrayList<String>();
 
 		for(int i=0;i<file.length;i++){
-			storageService.store(file[i]);
-			fileName.add(StringUtils.cleanPath(file[i].getOriginalFilename()));		
+			storageService.store(file[i]);   // 파일 저장
+			fileName.add(StringUtils.cleanPath(file[i].getOriginalFilename()));		// 파일 이름을 배열에 저장
 		}
 
-		while(fileName.size() != 6){
+		while(fileName.size() != 6){ // 파일 최대 개수를 6개로 두었기 때문에, size가 6이 아니면, 6이 될때까지 0을 추가
 			fileName.add("0");
 		}
 		while(names.size() != 6){
@@ -148,10 +148,17 @@ public class VoteController {
         
         es.execute(() -> {
             try {
-                JSONObject json = klaytn.klaytnDeploy();
+				// JSONObject json = klaytn.klaytnDeploy();
+				JSONObject json = klaytn.klaytnDeploy2();
+				
 				System.out.println(json);
 				data.setAddress(json.get("address").toString());
-                voteRepository.saveAndFlush(data);
+
+				voteRepository.saveAndFlush(data);
+				
+				JSONObject json2 = klaytn.klaytnSetOptions(json.get("address").toString(), 202004280000L, 202004290000L, count);
+				System.out.println(json2);
+
             } catch (Exception e) {
                 System.out.println("클레이튼 오류 발생 : 투표 생성");
             }
@@ -231,7 +238,9 @@ public class VoteController {
         
 				es.execute(() -> {
 					try {
-						JSONObject message = klaytn.klaytnSend(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()));							
+						// JSONObject message = klaytn.klaytnSend(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()));							
+						JSONObject message = klaytn.klaytnSend2(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()),202004280500L);							
+						
 						voter.setState(1);
 						voter.setHash(message.get("hash").toString());
 						voterRepository.saveAndFlush(voter);//투표 완료.
@@ -275,12 +284,14 @@ public class VoteController {
 		JSONArray json = new JSONArray();
 		
 		try {
-			JSONObject result = klaytn.load(vote.getAddress());
-			// System.out.println("result: " +result);
+			// JSONObject result = klaytn.load(vote.getAddress());
+			JSONObject result = klaytn.load2(vote.getAddress());
+			System.out.println("result: " +result);
 			json.add(0, result);
 
 			json.add(1,vote.getCount());
 			json.add(2,voteName.getAllName());
+			System.out.println("result json -------:"+json);
 			
 		} catch (Exception e) {
 			System.out.println("클레이튼 오류 발생: 결과 출력 오류");

@@ -109,9 +109,9 @@ class VoteCreate extends React.Component {
                 선택지 개수 &nbsp;&nbsp;
                 
                 <label><input defaultChecked type="radio" name="count" value="2" onChange={this.changeSelect.bind(this,2)}/>2</label>&nbsp;
-                <label><input type="radio" name="count" value="2" onChange={this.changeSelect.bind(this,3)}/>3</label>&nbsp;
-                <label><input type="radio" name="count" value="2" onChange={this.changeSelect.bind(this,4)}/>4</label>&nbsp;
-                <label><input type="radio" name="count" value="2" onChange={this.changeSelect.bind(this,5)}/>5</label>&nbsp;
+                <label><input type="radio" name="count" value="3" onChange={this.changeSelect.bind(this,3)}/>3</label>&nbsp;
+                <label><input type="radio" name="count" value="4" onChange={this.changeSelect.bind(this,4)}/>4</label>&nbsp;
+                <label><input type="radio" name="count" value="5" onChange={this.changeSelect.bind(this,5)}/>5</label>&nbsp;
                 
                 {/* <select id="select_num"  defaultValue={'2'} name="count" onChange={this.changeSelect.bind(this)}
                 className="">

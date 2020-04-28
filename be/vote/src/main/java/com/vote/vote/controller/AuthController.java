@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.vote.vote.config.CustomUserDetails;
 import com.vote.vote.db.dto.Member;
 import com.vote.vote.klaytn.Klaytn;
 import com.vote.vote.repository.MemberJpaRepository;
@@ -20,7 +21,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.security.core.userdetails.User;
 
 @Controller
 @RequestMapping("/auth")
@@ -104,19 +103,26 @@ public class AuthController {
        
         // UserDetails.
 //			session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-        UserDetails user = 
-        User
-        .withUsername(userInfo.get("id").toString())
-            .password(userInfo.get("id").toString())
-            .username(userInfo.get("id").toString())
-            .authorities(AuthorityUtils.createAuthorityList("USER"))
-            .roles("USER")
-        .build();
+        //  UserDetails 를 상속받아서 더 많은 정보를 가질 수 있게 해야 함.
+        // UserDetails user = 
+        // User
+        // .withUsername(userInfo.get("id").toString())
+        //     .password(userInfo.get("id").toString())
+        //     .username(userInfo.get("id").toString())
+        //     .authorities(AuthorityUtils.createAuthorityList("USER"))
+        //     .roles("USER")
+        // .build();
+        CustomUserDetails user2 = new CustomUserDetails();
+        user2.setID(userInfo.get("id").toString());
+        user2.setPASSWORD(userInfo.get("id").toString());
+        user2.setNAME(userInfo.get("name").toString());
+        user2.setIMG(userInfo.get("img").toString());
+        user2.setAUTHORITY("USER");
 
         final HttpSession session = request.getSession();
         final SecurityContext securityContext = SecurityContextHolder.getContext();
         final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-            user, "null", AuthorityUtils.commaSeparatedStringToAuthorityList("USER"));
+            user2, "null", AuthorityUtils.commaSeparatedStringToAuthorityList("USER"));
 
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         securityContext.setAuthentication(authentication);
