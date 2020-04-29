@@ -1,0 +1,11 @@
+main {
+    min-height: 450px;
+}
+.contents{
+    width: auto;
+    min-height: 270px;
+    margin: 100px;
+    /* text-align: center; */
+/*    align 은 컨텐츠에 알맞게 수정*/
+    
+}

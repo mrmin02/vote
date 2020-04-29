@@ -21,8 +21,8 @@ var data = {
     datasets: [
       {
         data: [],
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56','#FFCE56','#FFCE56'],
-        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56','#FFCE56','#FFCE56']
+        backgroundColor: ['#FA5858', '#FE9A2E', '#FFFF00','#80FF00','#00FFFF','#0080FF','#BF00FF','#848484'],
+        hoverBackgroundColor: ['#FA5858', '#FE9A2E', '#FFFF00','#80FF00','#00FFFF','#0080FF','#BF00FF','#848484']
       }
     ]
   };

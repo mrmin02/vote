@@ -3,5 +3,7 @@
     width: auto;
     /* float: left;  */
     margin-left: 50px;
-
+}
+body{
+    font-family:none;
 }

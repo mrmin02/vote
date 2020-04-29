@@ -1,0 +1,229 @@
+body {
+    margin:0px;
+    font-family: none !important;
+}
+header{
+    overflow: hidden;
+    position: relative;
+    padding-top:70px;
+        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#5d55aa+1,dd2cc0+100 */
+    background: rgb(93, 85, 170);
+    /* Old browsers */
+    background: -moz-linear-gradient(45deg, rgba(93, 85, 170, 1) 1%, rgba(221, 44, 192, 1) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(45deg, rgba(93, 85, 170, 1) 1%, rgba(221, 44, 192, 1) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(45deg, rgba(93, 85, 170, 1) 1%, rgba(221, 44, 192, 1) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#5d55aa', endColorstr='#dd2cc0', GradientType=1);
+    /* IE6-9 fallback on horizontal gradient */
+}
+header .contents{
+    margin: auto;
+    max-width: 1200px;
+    min-width: 800px;
+    background-color: none;
+}
+
+top {
+    display:block;
+    position:fixed;
+    align-content: center;
+    text-align: right;
+    width:100%;
+    background-color: rgba(66,103,178,1);
+    padding: 15px;
+    z-index: 10;
+}
+top .top_div{
+    display: block;
+    width:80%;
+}
+top div {
+    display: inline;
+}
+top .top_div span{
+    color: white;
+}
+top .top_div .top_form{
+    display: inline;
+}
+
+top a {
+    text-decoration: none;
+    /*    color: black;*/
+    color: white;
+    font padding-right: 10px;
+    padding-left: 10px;
+}
+
+top a:nth-child(n):not(:last-child) {
+    border-right: 3px solid #BDBDBD;
+}
+
+nav {
+    display: flex !important;
+    justify-content: space-between;
+/*    margin-top: 10px;*/
+    margin-right: 20px;
+    margin-bottom: 15px;
+    z-index: 10;
+}
+
+nav div.title {
+    display: inline;
+    z-index: 10;
+}
+
+div.title a {
+    color: white;
+    text-decoration: none;
+    font-weight: 1000;
+    font-size: 30px;
+    margin-left: 50px;
+    margin-bottom: 0px;
+
+}
+
+div.menu div {
+    display: inline;
+    font-weight: 1000;
+    font-size: 18px;
+    padding: 0px 10px;
+    /*            margin-right: 5px;*/
+    text-align: center;
+    color: white;
+    
+}
+
+div.menu div:nth-child(2) {
+    width: 100px;
+}
+
+div.menu div:nth-child(3) {
+    /*            width:150px;*/
+}
+
+div.menu div:nth-child(4) {
+    width: 100px;
+}
+
+nav div.menu {
+    text-align: right;
+/*    border-bottom: 2px solid #BDBDBD;*/
+    z-index: 5;
+}
+
+div.menu a {
+    text-decoration: none;
+    color: black;
+    padding: 0px 10px;
+}
+
+main {
+    background-color: whi;
+    min-height: 815px;
+    margin: 10px 20px;
+    overflow: hidden;
+}
+main div.ani{
+    overflow: hidden;
+    
+}
+
+footer {
+/*    position: absolute;*/
+    display: flex !important;
+    
+    justify-content: space-between;
+    z-index: 5;
+    padding: 25px;
+    background-color: white;
+    margin: auto;
+    max-width: 1200px;
+    min-width: 800px;
+    
+}
+
+footer div.option {
+    display: inline;
+    margin-left: 10px;
+    
+}
+
+div.option div {
+    display: inline;
+    font-weight: 600;
+    
+}
+
+div.option a {
+    color: black;
+    text-decoration: none;
+    padding-left: 10px;
+}
+
+div.option a:nth-child(n):not(:last-child) {
+    border-right: 3px solid #BDBDBD;
+    padding-right: 10px;
+}
+
+footer div.min-address {
+    display: inline;
+    font-weight: 600;
+    margin-right: 15px;
+    color: rgba(221, 44, 192, 1);
+    
+}
+footer div.option a:hover{
+    color:rgba(221, 44, 192, 1);
+}
+
+nav div.dropMenu {
+/*    position: relative;*/
+    display: inline-block;
+}
+
+nav div.drop a {
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    padding: 10px 0px;
+    color: white;
+}
+
+nav div.drop {
+    display: none;
+    position: absolute;
+    background-color: #424242;
+    /*            min-width: 110px;*/
+    border-radius: 15px;
+    z-index: 1;
+    padding: 0px;
+    padding: 5px 10px;
+    text-align: center;
+    margin: 0px auto;
+}
+
+nav div.dropMenu:hover .drop {
+    display: block;
+}
+
+nav div.drop a:hover {
+    /*            background-color: #ddd;*/
+    color: #D0A9F5;
+/*    rgba(66,103,178,1)*/
+}
+
+nav div.dropMenuactive .drop {
+    display: block;
+}
+
+
+contents{
+}
+contents div.contents{
+    max-width: 1200px;
+    margin: auto;
+/*    background-color: aquamarine;*/
+}

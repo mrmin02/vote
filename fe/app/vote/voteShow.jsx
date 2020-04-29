@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
-// import ItemCard from '../items/itemCard.jsx';
 import ItemCard from '../items/itemCard.jsx';
 import './voteShow.css'
 const axios = require('axios');

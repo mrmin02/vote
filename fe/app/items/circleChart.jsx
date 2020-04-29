@@ -6,7 +6,7 @@ var data = {
   datasets: [
     {
       data: [300, 50, 300],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56','#FFCE56','#FFCE56'],
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56','#FFCE56','#848484'],
       hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56','#FFCE56','#FFCE56']
     }
   ]

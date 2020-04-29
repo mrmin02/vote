@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Button from '@bit/react-bootstrap.react-bootstrap.button';
 import Card from '@bit/react-bootstrap.react-bootstrap.card';
 import ReactBootstrapStyle from '@bit/react-bootstrap.react-bootstrap.internal.style-links';
- 
+
+
 class ItemCard extends Component {
 	constructor(props){
 		super(props);
@@ -27,4 +28,4 @@ class ItemCard extends Component {
 	}
 }
 export default ItemCard
-// export default () => (<div><ReactBootstrapStyle /><ItemCard/></div>)
+

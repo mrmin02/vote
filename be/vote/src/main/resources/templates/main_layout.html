@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-secutiry"
+th:fragment="layout(content,js,title)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/ani.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <script type="text/javascript" th:replace="${js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+
+
+    <title>RIRO</title>
+
+</head>
+
+<body>
+    <top>
+        <div class="top_div">
+            <th:block sec:authorize="isAuthenticated()"><!-- 로그인 되어 있는가 -->
+                <span sec:authentication="principal.name"></span><span> 님</span> 
+                <a></a>
+                <form class="top_form"action="/logout" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <a href="/userInfo">내 정보 및 관리 </a>&nbsp;
+                    <input type="submit" value="로그아웃">                    
+                </form>
+            </th:block>
+
+            <th:block sec:authorize="! isAuthenticated()">
+                <a href="/auth">
+                    <div>로그인</div>
+                </a>
+                <a href="/auth/register">
+                    <div>회원가입</div>
+                </a>
+                <a href="#">
+                    <div>고객센터</div>
+                </a>
+            </th:block>
+        </div>
+    </top>
+    <header>
+        <div class="contents">
+            <nav>
+                <div class="title">
+                    <a href="/">RIRO</a>
+                </div>
+                <div class="menu">
+                    <a href="/">
+                        <div>홈</div>
+                    </a>
+                    <div class="dropMenu">
+                        <a href="#">
+                            <div>소개</div>
+                        </a>
+                        <div class="drop">
+                            <a href="#">블록체인이란?</a>
+                            <a href="#">서비스소개</a>
+                            <a href="#">개발자소개</a>
+                        </div>
+                    </div>
+                    <div class="dropMenu">
+                        <a href="#">
+                            <div>오디션</div>
+                        </a>
+
+                        <div class="drop">
+                            <a href="#">참가신청</a>
+                            <a href="#">예선결과안내</a>
+                        </div>
+
+                    </div>
+
+                    <div class="dropMenu">
+                        <a href="#">
+                            <div href="#">투표</div>
+                        </a>
+                        <div class="drop">
+                            <a href="#">시작전투표</a>
+                            <a href="/vote">진행중인 투표</a>
+                            <a href="#">마감된 투표</a>
+                        </div>
+                    </div>
+                    <div class="dropMenu">
+                        <a href="#">
+                            <div href="#">커뮤니티</div>
+                        </a>
+                        <div class="drop">
+                            <a href="#">팬클럽</a>
+                            <a href="#">인기투표</a>
+                            <a href="#">주간Hot Clip</a>
+                            <a href="#">방청권응모</a>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div>굿즈샵</div>
+                    </a>
+                </div>
+            </nav>
+
+            <main>
+                <div class="center_title_conetnt">
+                    <h3 class="display-2 mb-4" th:text="${title}"></h3>
+                </div>
+            </main>
+        </div>
+
+    </header>
+    <contents>
+        <div class="contents">
+            <div th:replace="${content}"></div>
+        </div>
+    </contents>
+    <footer>
+        <div class="option">
+            <a href="#">
+                <div>개인정보 취급정책</div>
+            </a>
+            <a href="#">
+                <div>이용약관</div>
+            </a>
+            <a href="#">
+                <div>관리자</div>
+            </a>
+        </div>
+
+        <div class="min-address">
+            <div>2020 RIRO.com</div>
+        </div>
+    </footer>
+</body>
+</html>
