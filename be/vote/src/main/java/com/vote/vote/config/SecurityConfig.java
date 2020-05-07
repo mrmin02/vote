@@ -3,8 +3,8 @@ package com.vote.vote.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vote.vote.O2.CustomOAuth2Provider;
-import com.vote.vote.O2.CustomOAuth2UserService;
+// import com.vote.vote.O2.CustomOAuth2Provider;
+// import com.vote.vote.O2.CustomOAuth2UserService;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
@@ -56,18 +56,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()   
 		.csrf() 
 			.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())    
-			.and()
+			.and();
 
 
-		.oauth2Login() 
-			.userInfoEndpoint()
-			.userService(new CustomOAuth2UserService()) // 네이버 USER INFO의 응답을 처리하기 위한 설정 
-			.and() 
-		.defaultSuccessUrl("/") 
-			.failureUrl("/") 
-			.and() 
-		.exceptionHandling() 
-		.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/auth"));
+		// .oauth2Login() 
+		// 	.userInfoEndpoint()
+		// 	.userService(new CustomOAuth2UserService()) // 네이버 USER INFO의 응답을 처리하기 위한 설정 
+		// 	.and() 
+		// .defaultSuccessUrl("/") 
+		// 	.failureUrl("/") 
+		// 	.and() 
+		// .exceptionHandling() 
+		// .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/auth"));
 
 			
 		// .oauth2Login();
@@ -79,22 +79,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// 	.and();  
 	} 
 
-	@Bean
-	public ClientRegistrationRepository clientRegistrationRepository(
-		@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-		String kakaoClientId,
-		@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
-		String kakaoClientSecret){
-			List<ClientRegistration> registrations = new ArrayList<>();
-			registrations.add(CustomOAuth2Provider.KAKAO.getBuilder("kakao")
-			.clientId(kakaoClientId)
-			.clientSecret(kakaoClientSecret)
-			.jwkSetUri("temp")
-			.build());
-
-			System.out.println("------------clientRegistrationRepository-------------");
-			return new InMemoryClientRegistrationRepository(registrations);
-		}
 	// @Bean
 	// public ClientRegistrationRepository clientRegistrationRepository(
 	// 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
@@ -111,21 +95,41 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// 		System.out.println("------------clientRegistrationRepository-------------");
 	// 		return new InMemoryClientRegistrationRepository(registrations);
 	// 	}
-	@Bean
-    public ClientRegistrationRepository clientRegistrationRepository(
-            OAuth2ClientProperties oAuth2ClientProperties,
-            @Value("${spring.security.oauth2.client.registration.kakao.client-id}") String kakaoClientId,
-            @Value("${spring.security.oauth2.client.registration.kakao.client-secret}") String kakaoClientSecret)
-            // @Value("${custom.oauth2.naver.client-id}") String naverClientId,
-			// @Value("${custom.oauth2.naver.client-secret}") String naverClientSecret) 
-			{
 
-			List<ClientRegistration> registrations = new ArrayList<>();
-			registrations.add(CustomOAuth2Provider.KAKAO.getBuilder("kakao")
-			.clientId(kakaoClientId)
-			.clientSecret(kakaoClientSecret)
-			.jwkSetUri("temp")
-			.build());				
+	// @Bean
+	// public ClientRegistrationRepository clientRegistrationRepository(
+	// 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+	// 	String kakaoClientId,
+	// 	@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+	// 	String kakaoClientSecret){
+	// 		List<ClientRegistration> registrations = new ArrayList<>();
+	// 		registrations.add(CustomOAuth2Provider.KAKAO.getBuilder("kakao")
+	// 		.clientId(kakaoClientId)
+	// 		.clientSecret(kakaoClientSecret)
+	// 		.jwkSetUri("temp")
+	// 		.build());
+
+	// 		System.out.println("------------clientRegistrationRepository-------------");
+	// 		return new InMemoryClientRegistrationRepository(registrations);
+	// 	}
+
+	// @Bean
+    // public ClientRegistrationRepository clientRegistrationRepository(
+    //         OAuth2ClientProperties oAuth2ClientProperties,
+    //         @Value("${spring.security.oauth2.client.registration.kakao.client-id}") String kakaoClientId,
+    //         @Value("${spring.security.oauth2.client.registration.kakao.client-secret}") String kakaoClientSecret)
+    //         // @Value("${custom.oauth2.naver.client-id}") String naverClientId,
+	// 		// @Value("${custom.oauth2.naver.client-secret}") String naverClientSecret) 
+	// 		{
+
+	// 		List<ClientRegistration> registrations = new ArrayList<>();
+	// 		registrations.add(CustomOAuth2Provider.KAKAO.getBuilder("kakao")
+	// 		.clientId(kakaoClientId)
+	// 		.clientSecret(kakaoClientSecret)
+	// 		.jwkSetUri("temp")
+	// 		.build());	
+			
+			
         // List<ClientRegistration> registrations = oAuth2ClientProperties
         //         .getRegistration().keySet().stream()
         //         .map(client -> getRegistration(oAuth2ClientProperties, client))
@@ -143,12 +147,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //         .clientSecret(naverClientSecret)
         //         .jwkSetUri("temp")
         //         .build());
-        return new InMemoryClientRegistrationRepository(registrations);
-    }
-	@Bean
-	public RestTemplate restTemplate() {
-    return new RestTemplate();
-}
+        // return new InMemoryClientRegistrationRepository(registrations);
+    // }
+// 	@Bean
+// 	public RestTemplate restTemplate() {
+//     return new RestTemplate();
+// }
 
 
 	public AuthenticationSuccessHandler successHandler() {

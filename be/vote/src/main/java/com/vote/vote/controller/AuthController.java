@@ -41,9 +41,9 @@ public class AuthController {
     @Autowired
     KakaoAPIService kakao;
 
-    @Autowired
-	// @Qualifier("kakaoRestTemplate")
-	private RestOperations kakaoRestTemplate;
+    // @Autowired
+	// // @Qualifier("kakaoRestTemplate")
+	// private RestOperations kakaoRestTemplate;
 
 
     public AuthController(OAuth2AuthorizedClientService authorizedClientService) {
