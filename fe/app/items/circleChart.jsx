@@ -11,7 +11,6 @@ var data = {
     }
   ]
 };
-
 class CircleChart extends Component{
     constructor(props){
         super(props)

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+th:replace="~{auth_layout::auth_layout(~{::content},_,~{::ss},~{::subTitle},~{::footer})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <ss>
+        <link rel="stylesheet" href="/css/auth/login.css">
+    </ss>
+</head>
+<body>
+    <subTitle>
+        <div class="subTitle">RIRO 로그인</div>
+        <div class="subTitle2">
+            <a href="/auth/register">새 계정 만들기</a>
+        </div>
+    </subTitle>
+        
+    <content>
+        <div class="auth_left">
+            <div class="item_left">
+                <form method="post" th:action="@{/auth}">
+                    <div id="login"></div>
+                </form>
+                <script src="../assets/login.js"></script>
+            </div>
+        </div>
+        <div class="auth_right">
+            <div class="item_right_text">Social Login</div>
+            <div class="item_right">
+                <a href="https://kauth.kakao.com/oauth/authorize?client_id=e8669f9bcfca75260c3c64f470e04978&redirect_uri=http://localhost:3000/auth/oauth2/code/kakao&response_type=code">
+                    <img src="/img/kakao_account_login_btn_medium_narrow.png" alt="">
+                </a>
+            </div>
+        </div>
+    </content>
+    <footer>
+        <div class="footer">
+            <li>로그인 시 해당 <span style="color:#3498DB">이용약관</span>이용약관, RIRO 이메일 및 업데이트 수신에</li>
+            동의하고 <span style="color:#3498DB">개인정보 취급정책</span>을 숙지하였음을 인정합니다.
+        </div>
+    </footer>
+</body>
+</html>

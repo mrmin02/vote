@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+th:fragment="auth_layout(content,js,style,subTitle,footer)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIRO</title>
+    <script type="text/javascript" th:replace="${js}"></script>
+    <link rel="stylesheet" href="/css/auth/auth.css">
+    <link rel="stylesheet" th:replace="${style}">
+</head>
+<body>
+    <top>
+        <div class="title">
+            <a href="/">RIRO</a>
+        </div>
+    </top>
+    <nav>
+        <div th:replace="${subTitle}"></div>
+    </nav>
+    <main>
+        <div th:replace="${content}"></div>
+    </main>
+    <footer>
+        <div th:replace="${footer}"></div>
+    </footer>
+</body>
+</html>

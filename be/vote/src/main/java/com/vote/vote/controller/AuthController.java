@@ -58,7 +58,7 @@ public class AuthController {
 
     @RequestMapping(value= {"","/"})
     public String login(){ // 로그인 뷰
-        return "auth/login";
+        return "auth/login2";
     }
 
     @RequestMapping(value={"/oauth2/code/kakao","/oauth2/code/kakao/"}, produces ="application/json", method = RequestMethod.GET)

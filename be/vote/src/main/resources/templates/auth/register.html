@@ -1,17 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" 
+th:replace="~{auth_layout::auth_layout(~{::content},_,~{::ss},~{::subTitle},~{::footer})}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    
+    <ss>
+        <link rel="stylesheet" href="/css/auth/register.css">
+    </ss>
 </head>
 <body>
-    
-    <form method="post" action="/auth/register">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-        <div id="register"></div>
-    </form>
-    <script src="../assets/register.js"></script>
+    <subTitle>
+        <subTitle>
+            <div class="subTitle">RIRO 회원가입</div>
+            <div class="subTitle2">
+                <a href="/auth">RIRO 계정으로 로그인 하기</a>
+            </div>
+        </subTitle>
+    </subTitle>
+    <content>
+        <form method="post" action="/auth/register">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div id="register"></div>
+        </form>
+        <script src="../assets/register.js"></script>
+    </content>
+    <footer>
+        <footer>
+            <div class="footer">
+                <li>가입 시 해당 <span style="color:#3498DB">이용약관</span>이용약관, RIRO 이메일 및 업데이트 수신에</li>
+                동의하고 <span style="color:#3498DB">개인정보 취급정책</span>을 숙지하였음을 인정합니다.
+            </div>
+        </footer>
+    </footer>
 </body>
 </html>
