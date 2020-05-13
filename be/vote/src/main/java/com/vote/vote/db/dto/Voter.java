@@ -5,34 +5,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+
 @Entity
-@Table
+@Table(name="voter")
 public class Voter{
+    
     @Id
     @Column(name="id", nullable=false)
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="VOTER_SEQ_GENERATOR")
+    @SequenceGenerator(name="VOTER_SEQ_GENERATOR", sequenceName="VOTER_SEQ", allocationSize = 1)
     private int id;
 
-    @Column
+    @Column(name="voteid",nullable=false)
     private int voteId;
 
-    @Column 
-    private String memberId;
+    @Column(name="userid",nullable=false)
+    private String userId;
 
-    @Column 
+    @Column(nullable=true)
     private int state;
 
     @Column(nullable=true)
     private String hash;
-
-
-    // @Column 
-    // private String privateKey;
-
-    // @Column 
-    // private String address;
 
 
     public int getId(){
@@ -41,8 +38,8 @@ public class Voter{
     public int getVoteId(){
         return voteId;
     }
-    public String getMemberId(){
-        return memberId;
+    public String getUserId(){
+        return userId;
     }
     public int getState(){
         return state;
@@ -51,20 +48,18 @@ public class Voter{
         return hash;
     }
 
-
     public void setId(int id){
         this.id = id;
     }
     public void setVoteId(int voteId){
         this.voteId = voteId;
     }
-    public void setMemberId(String memberId){
-        this.memberId = memberId;
+    public void setUserid(String userId){
+        this.userId = userId;
     }
     public void setState(int state){
         this.state = state;
     }
-    
     public void setHash(String hash){
         this.hash = hash;
     }

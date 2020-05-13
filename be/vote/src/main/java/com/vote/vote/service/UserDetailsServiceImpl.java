@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 
-        Member entityUser = userRepository.findByMemberId(username);
+        Member entityUser = userRepository.findByUserid(username);
         
         if(ObjectUtils.isEmpty(entityUser)){
             throw new UsernameNotFoundException("Invalid username");
@@ -40,9 +40,9 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         // 		.build();
         
         CustomUserDetails user2 = new CustomUserDetails();
-        user2.setID(entityUser.getMemberId());
+        user2.setID(entityUser.getUserid());
         user2.setPASSWORD(entityUser.getPassword());
-        user2.setIMG(entityUser.getImg());
+        user2.setIMG(entityUser.getProfile());
         user2.setNAME(entityUser.getName());
         user2.setAUTHORITY("USER");
         //  = (CustomUserDetails)usert;

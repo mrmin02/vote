@@ -6,26 +6,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.SequenceGenerator;
 
 @Entity
-@Table
+@Table(name="vote")//name="vote" 생략가능
 public class Vote{
     @Id
     @Column(name="id", nullable=false)
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="VOTE_SEQ_GENERATOR")
+    @SequenceGenerator(name="VOTE_SEQ_GENERATOR", sequenceName="VOTE_SEQ", allocationSize = 1)
     private int id;
 
-    @Column
+    @Column(nullable=false)
     private String title;
 
-    @Column 
+    @Column(nullable=false)
     private String writer;
-
-    @Column 
-    private int img;
-
-    @Column 
-    private int name;
 
     @Column(nullable=true)
     private String address;
@@ -43,12 +39,6 @@ public class Vote{
     public String getWriter(){
         return writer;
     }
-    public int getImg(){
-        return img;
-    }
-    public int getName(){
-        return name;
-    }
     public String getAddress(){
         return address;
     }
@@ -64,12 +54,6 @@ public class Vote{
     }
     public void setWriter(String writer){
         this.writer = writer;
-    }
-    public void setImg(int img){
-        this.img = img;
-    }
-    public void setName(int name){
-        this.name = name;
     }
     public void setAddress(String address){
         this.address = address;

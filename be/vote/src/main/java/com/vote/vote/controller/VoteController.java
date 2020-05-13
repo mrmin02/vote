@@ -7,14 +7,13 @@ import java.util.concurrent.Executors;
 
 import com.vote.vote.db.dto.Member;
 import com.vote.vote.db.dto.Vote;
-import com.vote.vote.db.dto.Vote_img;
-import com.vote.vote.db.dto.Vote_name;
 import com.vote.vote.db.dto.Voter;
+import com.kenai.jffi.Array;
+import com.vote.vote.db.dto.Candidate;
 import com.vote.vote.klaytn.Klaytn;
+import com.vote.vote.repository.CandidateJpaRepository;
 import com.vote.vote.repository.MemberJpaRepository;
 import com.vote.vote.repository.VoteJpaRepository;
-import com.vote.vote.repository.Vote_imgJpaRepository;
-import com.vote.vote.repository.Vote_nameJpaRepository;
 import com.vote.vote.repository.VoterJpaRepository;
 import com.vote.vote.service.StorageService;
 
@@ -49,10 +48,7 @@ public class VoteController {
 	private VoteJpaRepository voteRepository;
 
 	@Autowired
-	private Vote_imgJpaRepository vote_imgRepository;
-
-	@Autowired
-	private Vote_nameJpaRepository vote_nameRepository;
+	private CandidateJpaRepository candidateRepository;
 
 	@Autowired 
 	private VoterJpaRepository voterRepository;
@@ -117,32 +113,25 @@ public class VoteController {
 			fileName.add(StringUtils.cleanPath(file[i].getOriginalFilename()));		// 파일 이름을 배열에 저장
 		}
 
-		while(fileName.size() != 6){ // 파일 최대 개수를 6개로 두었기 때문에, size가 6이 아니면, 6이 될때까지 0을 추가
-			fileName.add("0");
-		}
-		while(names.size() != 6){
-			names.add("0");
-		}
-		Vote_img img_data = new Vote_img(fileName);
-		
-		vote_imgRepository.saveAndFlush(img_data);
-
-		Vote_name name_data =  new Vote_name(names);
-		
-		vote_nameRepository.saveAndFlush(name_data);
-
-		
 		Vote data = new Vote();
 
 		data.setTitle(title);
 		data.setWriter(user.getName());
-		data.setImg(img_data.getId());
-		data.setName(name_data.getId());
 		data.setCount(count);
 
-		// data.setAddress("testAddress");
+        voteRepository.saveAndFlush(data);
+        
+        
+        
+        for(int i=0; i<count;i++){
+            Candidate candidate =  new Candidate();
+            candidate.setVoteId(data.getId());
+            candidate.setImg(fileName.get(i));
+            candidate.setName(names.get(i));
+            candidateRepository.saveAndFlush(candidate);
+        }
+        
 
-		voteRepository.saveAndFlush(data);
 		
 		ExecutorService es = Executors.newCachedThreadPool();
         
@@ -174,7 +163,7 @@ public class VoteController {
 
 			Voter voter = new Voter();
 			voter.setVoteId(data.getId());
-			voter.setMemberId(member.getMemberId());
+			voter.setUserid(member.getUserid());
 			voter.setState(0);
 
 			voterRepository.saveAndFlush(voter);
@@ -196,16 +185,22 @@ public class VoteController {
 	@ResponseBody
 	public JSONArray showVoteAxios(@PathVariable("voteId") int voteId){
 		
-		Vote vote = voteRepository.findById(voteId);
-		Vote_img img = vote_imgRepository.findById(vote.getImg());
-		Vote_name name = vote_nameRepository.findById(vote.getName());
-		
+		// Vote vote = voteRepository.findById(voteId);
+		// Vote_img img = vote_imgRepository.findById(vote.getImg());
+		// Vote_name name = vote_nameRepository.findById(vote.getName());
+        ArrayList<Candidate> candidateList = candidateRepository.findByVoteId(voteId);
+        
 		JSONArray array = new JSONArray();
-		
-		ArrayList<String> imgs = img.getAllImg();
-		ArrayList<String> names = name.getAllName();
+        
+        ArrayList<String> names = new ArrayList<String>();
+		ArrayList<String> imgs = new ArrayList<String>();
+        
+        for(int i=0; i<candidateList.size();i++){
+            names.add(candidateList.get(i).getName());
+            imgs.add(candidateList.get(i).getImg());
+        }
 
-		for(int i=0; i<6;i++){
+		for(int i=0; i<names.size();i++){
 			JSONObject item = new JSONObject();
 			item.put("name", names.get(i));
 			item.put("img",imgs.get(i));
@@ -225,7 +220,7 @@ public class VoteController {
 		// System.out.println(axiosData.get("select"));  // 사용자가 뽑은 사람의 번호
 		JSONObject result = new JSONObject();
 
-		Voter voter = voterRepository.findByVoteIdAndMemberId(voteId, user.getName());
+		Voter voter = voterRepository.findByVoteIdAndUserId(voteId, user.getName());
 		Vote vote = voteRepository.findById(voteId);
 
 		if(voter != null){// 유권자일 경우
@@ -279,7 +274,13 @@ public class VoteController {
 	public synchronized JSONArray showResultAxios(@PathVariable("voteId") int voteId) {
 
 		Vote vote = voteRepository.findById(voteId);
-		Vote_name voteName = vote_nameRepository.findById(vote.getName());
+		ArrayList<Candidate> candidateList = candidateRepository.findByVoteId(voteId);
+
+        ArrayList names= new ArrayList();
+        
+        for(Candidate candidate: candidateList){
+            names.add(candidate.getName());
+        }
 
 		JSONArray json = new JSONArray();
 		
@@ -290,7 +291,7 @@ public class VoteController {
 			json.add(0, result);
 
 			json.add(1,vote.getCount());
-			json.add(2,voteName.getAllName());
+			json.add(2,names);
 			System.out.println("result json -------:"+json);
 			
 		} catch (Exception e) {

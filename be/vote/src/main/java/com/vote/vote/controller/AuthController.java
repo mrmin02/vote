@@ -82,17 +82,17 @@ public class AuthController {
         
         // System.out.println(session);
 
-        Member member = MemberRepository.findByMemberId(userInfo.get("id").toString());
+        Member member = MemberRepository.findByUserid(userInfo.get("id").toString());
         // 회원가입 되지 않은 경우.
         if (member == null) {
             Member newMember = new Member();
-            newMember.setMemberId(userInfo.get("id").toString());
+            newMember.setUserid(userInfo.get("id").toString());
             newMember.setName(userInfo.get("name").toString());
-            newMember.setImg(userInfo.get("img").toString());
+            newMember.setProfile(userInfo.get("img").toString());
             MemberRepository.saveAndFlush(newMember);
             System.out.println("회원가입 완료");
             try{
-                createPrivateKey(newMember);
+                // createPrivateKey(newMember);
             }catch(Exception e ){
                 System.out.println("카카로계정 회원가입에서 키 생성 오류");
             }
@@ -150,47 +150,48 @@ public class AuthController {
 
         Member data = new Member();
         
-        data.setMemberId(id);
+        // data.setNo(1);
+        data.setUserid(id);
         data.setPassword(pwd);
         data.setName(name);
         data.setBirth(birth);
         data.setPhone(phone);
-        data.setEmail(email);
+
         
         MemberRepository.saveAndFlush(data);
         
 
         ExecutorService es = Executors.newCachedThreadPool();
         
-        es.execute(() -> {
-            try {
-                JSONObject json = klaytn.createKey();
-                System.out.println(json);
-                data.setPrivateKey(json.get("privateKey").toString());
-                data.setAddress(json.get("address").toString());
-                MemberRepository.saveAndFlush(data);
-                System.out.println("저장 성공?");
-            } catch (Exception e) {
-                System.out.println("클레이튼 오류 발생 : 계정 생성");
-            }
-        });
+        // es.execute(() -> {
+        //     try {
+        //         JSONObject json = klaytn.createKey();
+        //         System.out.println(json);
+        //         data.setPrivateKey(json.get("privateKey").toString());
+        //         data.setAddress(json.get("address").toString());
+        //         MemberRepository.saveAndFlush(data);
+        //         System.out.println("저장 성공?");
+        //     } catch (Exception e) {
+        //         System.out.println("클레이튼 오류 발생 : 계정 생성");
+        //     }
+        // });
         
         return "redirect:/auth";
     }
     public void createPrivateKey(Member data) throws Exception{
         ExecutorService es = Executors.newCachedThreadPool();
         
-        es.execute(() -> {
-            try {
-                JSONObject json = klaytn.createKey();
-                System.out.println(json);
-                data.setPrivateKey(json.get("privateKey").toString());
-                data.setAddress(json.get("address").toString());
-                MemberRepository.saveAndFlush(data);
-                System.out.println("저장 성공?");
-            } catch (Exception e) {
-                System.out.println("클레이튼 오류 발생 : 계정 생성");
-            }
-        });
+        // es.execute(() -> {
+        //     try {
+        //         JSONObject json = klaytn.createKey();
+        //         System.out.println(json);
+        //         data.setPrivateKey(json.get("privateKey").toString());
+        //         data.setAddress(json.get("address").toString());
+        //         MemberRepository.saveAndFlush(data);
+        //         System.out.println("저장 성공?");
+        //     } catch (Exception e) {
+        //         System.out.println("클레이튼 오류 발생 : 계정 생성");
+        //     }
+        // });
     }
 }
