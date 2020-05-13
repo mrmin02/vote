@@ -11,8 +11,9 @@ import javax.persistence.SequenceGenerator;
 @Entity
 @Table(name="vote")//name="vote" 생략가능
 public class Vote{
+    
     @Id
-    @Column(name="id", nullable=false)
+    @Column(name="voteid", nullable=false)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="VOTE_SEQ_GENERATOR")
     @SequenceGenerator(name="VOTE_SEQ_GENERATOR", sequenceName="VOTE_SEQ", allocationSize = 1)
     private int id;

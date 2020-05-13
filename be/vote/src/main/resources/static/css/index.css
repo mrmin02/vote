@@ -227,3 +227,16 @@ contents div.contents{
     margin: auto;
 /*    background-color: aquamarine;*/
 }
+
+.img_div{
+    position: absolute;
+    margin-right: 10px;
+    /* display: inline-block; */
+    /* text-align: center; */
+}
+.img_div img{
+    position: relative;
+    right: 35px;
+    border-radius: 30px;
+    vertical-align: bottom;
+}

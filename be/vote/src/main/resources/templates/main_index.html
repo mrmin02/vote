@@ -9,13 +9,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
     <title>RIRO</title>
-
 </head>
 
 <body>
     <top>
         <div class="top_div">
             <th:block sec:authorize="isAuthenticated()"><!-- 로그인 되어 있는가 -->
+                <div class="img_div">
+                    <img  th:if="${#authentication.principal.img}" th:src="${#authentication.principal.img}" width="25" height="25">
+                    <img th:unless="${#authentication.principal.img}" src="/img/defaultProfile.png" width="25" height="25">
+                </div>
                 <span sec:authentication="principal.name"></span><span> 님</span> 
                 <a></a>
                 <form class="top_form"action="/logout" method="post">

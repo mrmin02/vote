@@ -21,6 +21,10 @@ th:fragment="layout(content,js,title)">
     <top>
         <div class="top_div">
             <th:block sec:authorize="isAuthenticated()"><!-- 로그인 되어 있는가 -->
+                <div class="img_div">
+                    <img  th:if="${#authentication.principal.img}" th:src="${#authentication.principal.img}" width="25" height="25">
+                    <img th:unless="${#authentication.principal.img}" src="/img/defaultProfile.png" width="25" height="25">
+                </div>
                 <span sec:authentication="principal.name"></span><span> 님</span> 
                 <a></a>
                 <form class="top_form"action="/logout" method="post">
