@@ -36,7 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AuthController {
 
     @Autowired
-    MemberJpaRepository MemberRepository;
+    MemberJpaRepository memberRepository;
     
     @Autowired
     KakaoAPIService kakao;
@@ -82,14 +82,19 @@ public class AuthController {
         
         // System.out.println(session);
 
-        Member member = MemberRepository.findByUserid(userInfo.get("id").toString());
+        Member member = memberRepository.findByUserid(userInfo.get("id").toString());
         // 회원가입 되지 않은 경우.
         if (member == null) {
             Member newMember = new Member();
             newMember.setUserid(userInfo.get("id").toString());
             newMember.setName(userInfo.get("name").toString());
-            newMember.setProfile(userInfo.get("img").toString());
-            MemberRepository.saveAndFlush(newMember);
+            if(userInfo.get("img")!=null){
+                newMember.setProfile(userInfo.get("img").toString());
+            }else{
+                newMember.setProfile("/img/defaultProfile.png");
+            }
+            
+            memberRepository.saveAndFlush(newMember);
             System.out.println("회원가입 완료");
             try{
                 // createPrivateKey(newMember);
@@ -99,6 +104,14 @@ public class AuthController {
             
         }
         // 회원가입 된 후  ( 이미 되어 있거나 방금 코드로 로그인 된 경우.)
+        Member user= memberRepository.findByUserid(userInfo.get("id").toString());
+        if(userInfo.get("img")!=null){
+            user.setProfile(userInfo.get("img").toString());
+        }else{
+            user.setProfile("/img/defaultProfile.png");
+        }
+        memberRepository.saveAndFlush(user);
+        
 
        
         // UserDetails.
@@ -116,7 +129,12 @@ public class AuthController {
         user2.setID(userInfo.get("id").toString());
         user2.setPASSWORD(userInfo.get("id").toString());
         user2.setNAME(userInfo.get("name").toString());
-        user2.setIMG(userInfo.get("img").toString());
+        if(userInfo.get("img")!=null){
+            user2.setIMG(userInfo.get("img").toString());
+        }else{
+            user2.setIMG("/img/defaultProfile.png");
+        }
+        
         user2.setAUTHORITY("USER");
 
         final HttpSession session = request.getSession();
@@ -158,7 +176,7 @@ public class AuthController {
         data.setPhone(phone);
 
         
-        MemberRepository.saveAndFlush(data);
+        memberRepository.saveAndFlush(data);
         
 
         ExecutorService es = Executors.newCachedThreadPool();
@@ -169,7 +187,7 @@ public class AuthController {
         //         System.out.println(json);
         //         data.setPrivateKey(json.get("privateKey").toString());
         //         data.setAddress(json.get("address").toString());
-        //         MemberRepository.saveAndFlush(data);
+        //         memberRepository.saveAndFlush(data);
         //         System.out.println("저장 성공?");
         //     } catch (Exception e) {
         //         System.out.println("클레이튼 오류 발생 : 계정 생성");
@@ -187,7 +205,7 @@ public class AuthController {
         //         System.out.println(json);
         //         data.setPrivateKey(json.get("privateKey").toString());
         //         data.setAddress(json.get("address").toString());
-        //         MemberRepository.saveAndFlush(data);
+        //         memberRepository.saveAndFlush(data);
         //         System.out.println("저장 성공?");
         //     } catch (Exception e) {
         //         System.out.println("클레이튼 오류 발생 : 계정 생성");

@@ -6,8 +6,11 @@ FrontEnd : React
 
 	
 	처음에 한번 : 
-		fe -> npm config set @bit:registry https://node.bit.dev
 		parent -> mvn install
  
   fe -> npm start
   be/vote -> ./mvnw spring-boot:run
+
+
+
+		fe -> npm config set @bit:registry https://node.bit.dev

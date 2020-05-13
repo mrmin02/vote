@@ -53,12 +53,6 @@ public class Member{
     @Column(nullable=true)//상세주소
     private String addr2;
 
-    @Column(nullable=true)//권한
-    private String role;
-
-    @Column(nullable=true)//세부권한
-    private String role2;
-
     @Column(nullable=true)
     private int point;
    
@@ -134,18 +128,7 @@ public class Member{
     public String getAddr2(){
         return this.addr2;
     }
-    public void setRole(String role){
-        this.role = role;
-    }
-    public String getRole(){
-        return this.role;
-    }
-    public void setRole2(String role2){
-        this.role2 = role2;
-    }
-    public String getRole2(){
-        return this.role2;
-    }
+
     public void setPoint(int Point){
         this.point = point;
     }
