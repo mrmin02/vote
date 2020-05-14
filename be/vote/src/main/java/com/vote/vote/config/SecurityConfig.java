@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/js/**").permitAll() // 프론트 권한
 			.antMatchers("/img/**").permitAll() // 프론트 권한
 			.antMatchers("/").permitAll() // 모든 권한을 줌.=로그인 필요 없음.     
-			.antMatchers("/auth/register").permitAll()
+			.antMatchers("/auth/**").permitAll()
 			.antMatchers("/auth/oauth2/**").permitAll()
 			// .antMatchers("/posts/**").hasRole("USER")
 			.antMatchers("/home").hasRole("USER")

@@ -18,7 +18,7 @@ th:replace="~{auth_layout::auth_layout(~{::content},_,~{::ss},~{::subTitle},~{::
         </subTitle>
     </subTitle>
     <content>
-        <form method="post" action="/auth/register">
+        <form method="post" action="/auth/register" id="register_form">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div id="register"></div>
         </form>

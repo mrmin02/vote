@@ -2,7 +2,7 @@
     /* background: red; */
     margin:auto;
 }
-.login_input{
+.register_input{
     border-radius: 5px;
     font-size: 20px;
     padding: 10px;    
@@ -14,4 +14,42 @@
     font-size: 20px;
     padding: 10px;    
     margin-top: 20px;
+}
+.register_birth{
+    float: left;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 10px;    
+    margin-top: 20px;
+    width:200px;
+}
+.register_left_td{
+    float: left;
+    font-size: 20px;
+    
+}
+.register_right_td{
+    float: left;
+    margin-left: 50px;
+    font-size: 20px;
+    
+}
+
+.check_button{
+    margin-top: 15px;
+    margin-left: 10px;
+    background-color:#3498DB;
+    font-size: 15px;
+    color:white;
+    padding: 10px;
+    border-radius: 10px;
+}
+.submit_button{
+    background-color:#3498DB;
+    font-size: 15px;
+    color:white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;    
+    
 }

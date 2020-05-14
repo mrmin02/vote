@@ -15,8 +15,8 @@ import com.vote.vote.klaytn.Klaytn;
 import com.vote.vote.repository.MemberJpaRepository;
 import com.vote.vote.service.KakaoAPIService;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,11 +25,14 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestOperations;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import net.minidev.json.JSONObject;
 
 @Controller
 @RequestMapping("/auth")
@@ -154,6 +157,26 @@ public class AuthController {
     @RequestMapping(value= {"/register","/register/"})
     public String register(){ // 회원가입 뷰
         return "auth/register";
+    }
+    
+    @ResponseBody
+    @RequestMapping(value= {"/register/checkId/{id}","/register/checkId/{id}/"},
+    method=RequestMethod.GET,
+	produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject register_check_id(@PathVariable("id") String id){ // 로그인 뷰
+        JSONObject result = new JSONObject();
+
+
+        Member member = memberRepository.findByUserid(id);
+        if(member == null){
+            result.put("message", "사용 가능한 아이디 입니다.");
+            result.put("check", 1);
+        }else{
+            result.put("message", "이미 존재하는 아이디입니다.");
+            result.put("check", 0);
+        }
+        
+        return  result;
     }
 
     // @Slf4j
