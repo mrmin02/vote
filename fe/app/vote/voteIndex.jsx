@@ -1,43 +1,24 @@
 import React, {Component}from 'react'
 import ReactDOM from 'react-dom';
+import VoteIndex from './voteIndexItem.jsx';
 const regeneratorRuntime = require("regenerator-runtime");
 const axios = require('axios');
 
-class VoteIndex extends Component {
+
+class Index extends Component{
     constructor(props){
         super(props);
-        this.state = { title: [] };
+        this.url = "/vote/axios";
     }
-
-    async componentDidMount(){
-        let {data : title} = await axios.get('/vote/axios');
-
-        this.setState({title});
-        
-    }
-    render() {
-        const { title } = this.state;
-        return title.map((tt,index)=>{
-            return (
-                <div key={'div'+index}>
-                    <a href={"/vote/"+tt.id} key={index}>{tt.title}</a>
-                    &nbsp;&nbsp;&nbsp;
-                    <a href={'/vote/result/'+tt.id}>실시간 투표 결과</a>
-                </div>
-            )
-        })
-      }
-}
-class Index extends Component{
     render(){
         return(
             <div>
-                Vote
+                진행중인 투표
                 <div>
                     <a href="/vote/create">투표 생성</a>
                 </div>
                 <br/><br/><br/>
-                <VoteIndex/>
+                <VoteIndex url={this.url}/>
             </div>
         )
     }

@@ -1,3 +1,6 @@
 content{
     text-align: center;
 }
+.flash_message{
+    color:red;
+}

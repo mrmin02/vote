@@ -1,5 +1,7 @@
 package com.vote.vote.db.dto;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +32,11 @@ public class Vote{
     @Column
     private int count;
 
+    @Column(name="starttime", nullable=true)
+    private String startTime;
+    @Column(name="endTime", nullable=true)
+    private String endTime;
+
     public int getId(){
         return id;
     }
@@ -46,7 +53,13 @@ public class Vote{
     public int getCount(){
         return count;
     }
-    
+    public String getStartTime(){
+        return startTime;
+    }
+    public String getEndTime(){
+        return endTime;
+    }
+
     public void setId(int id){
         this.id = id;
     }
@@ -62,5 +75,12 @@ public class Vote{
     public void setCount(int count){
         this.count = count;
     }
+    public void setStartTime(String startTime){
+        this.startTime = startTime;
+    }
+    public void setEndTIme(String endTime){
+        this.endTime = endTime;
+    }
+
 
 }

@@ -1,9 +1,13 @@
 package com.vote.vote.controller;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+
 
 import com.vote.vote.db.dto.Member;
 import com.vote.vote.db.dto.Vote;
@@ -56,22 +60,79 @@ public class VoteController {
 
 	public Klaytn klaytn = new Klaytn();
 
+	// 진행중인 투표
 	@RequestMapping(value={"","/"}, method=RequestMethod.GET)
-	public String index(Model model, Principal user) {
-		// model.addAttribute("votes",voteRepository.findAll());
-		
-		System.out.println(user.getName());
+	public String index(Model model, Principal user) { 
+
 		return "vote/index";
 	}
+
+	// 시작전 투표
+	@RequestMapping(value={"/pre","/pre/"}, method=RequestMethod.GET)
+	public String preIndex(Model model, Principal user) { 
+
+		return "vote/preIndex";
+	}
+
+	//마감된 투표
+	@RequestMapping(value={"/end","/end/"}, method=RequestMethod.GET)
+	public String endIndex(Model model, Principal user) {
+
+		return "vote/endIndex";
+	}
+
+	//진행중 투표 리엑트
 	@RequestMapping(value={"/axios","/axios/"})
 	@ResponseBody
 	public JSONArray indexAxios(Principal user){
+		System.out.println("진행중");
+		String nowTime = getNowTime();
 
-		ArrayList<Vote> votes = voteRepository.findAll();
+		ArrayList<Vote> votes = voteRepository.findDoingVote(nowTime);
+		
+		JSONArray json = createVoteList(votes);
 
+		return json;
+	}
+
+	//시작전 투표 리엑트
+	@RequestMapping(value={"/pre/axios","/pre/axios/"})
+	@ResponseBody
+	public JSONArray preIndexAxios(Principal user){
+		System.out.println("시작전");
+		String nowTime = getNowTime();
+
+		ArrayList<Vote> votes = voteRepository.findPreVote(nowTime);
+		
+		JSONArray json = createVoteList(votes);
+
+		return json;
+	}
+
+	//마감된 투표 리엑트
+	@RequestMapping(value={"/end/axios","/end/axios/"})
+	@ResponseBody
+	public JSONArray endIndexAxios(Principal user){
+		System.out.println("마감");
+		String nowTime = getNowTime();
+
+		ArrayList<Vote> votes = voteRepository.findEndVote(nowTime);
+		
+		JSONArray json = createVoteList(votes);
+
+		return json;
+	}
+
+
+	public String getNowTime(){
+		Date time = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmm");
+		String nowTime = format.format(time);
+		return nowTime;
+	}
+	public JSONArray createVoteList(ArrayList<Vote> votes){
 		JSONArray json = new JSONArray();
 
-		// JSONArray data = new JSONArray();
 		for( Vote vote : votes){
 			JSONObject voteData = new JSONObject();
 			voteData.put("title", vote.getTitle());
@@ -79,16 +140,9 @@ public class VoteController {
 			// data.add(voteData);
 			json.add(voteData);
 		}
-		
 
-		// JSONObject userJson = new JSONObject();
-		// userJson.put("user",user.getName());
-		
-		// json.add(userJson);
-		
 		return json;
 	}
-	
 
     @RequestMapping(value={"/create","/create/"})
 	public String create(Model model) {
@@ -101,8 +155,9 @@ public class VoteController {
 		@RequestParam(name="title") String title,
 		@RequestParam(name="file") MultipartFile[] file,
 		@RequestParam(name="name") ArrayList<String> names,
-		// @RequestParam(name="content") String[] content,
 		@RequestParam(name="count") int count,
+		@RequestParam(name="startTime") String startTime,
+		@RequestParam(name="endTime") String endTime,
 		Principal user
 	){
 		
@@ -115,10 +170,16 @@ public class VoteController {
 
 		Vote data = new Vote();
 
+		// string 에서 숫자만 추출   기본 값: 년-월-일T시:분
+		String startTime_set = startTime.replaceAll("[^0-9]","");
+		String endTime_set = endTime.replaceAll("[^0-9]","");
+
+
 		data.setTitle(title);
 		data.setWriter(user.getName());
 		data.setCount(count);
-
+		data.setStartTime(startTime_set);
+		data.setEndTIme(endTime_set);
         voteRepository.saveAndFlush(data);
         
         
@@ -131,21 +192,22 @@ public class VoteController {
             candidateRepository.saveAndFlush(candidate);
         }
         
-
+		
 		
 		ExecutorService es = Executors.newCachedThreadPool();
         
         es.execute(() -> {
             try {
 				// JSONObject json = klaytn.klaytnDeploy();
-				JSONObject json = klaytn.klaytnDeploy2();
+				JSONObject json = klaytn.klaytnDeploy2();// 스마트 컨트렉트 배포
 				
 				System.out.println(json);
 				data.setAddress(json.get("address").toString());
 
 				voteRepository.saveAndFlush(data);
 				
-				JSONObject json2 = klaytn.klaytnSetOptions(json.get("address").toString(), 202004280000L, 202004290000L, count);
+				//스마트 컨트랙트 배포후에 투표 시작시간, 끝 시간 세팅
+				JSONObject json2 = klaytn.klaytnSetOptions(json.get("address").toString(), Long.parseLong(startTime_set), Long.parseLong(endTime_set), count);
 				System.out.println(json2);
 
             } catch (Exception e) {
@@ -156,7 +218,7 @@ public class VoteController {
 		
 
 		
-		// 모든 회원들에게 투표 권한 줌 
+		// 모든 회원들에게 투표 권한 줌  // 나중에 로직 변경 가능성 있음.
 		ArrayList<Member> members = MemberRepository.findAll();
 		for (Member member : members) {
 
@@ -222,19 +284,22 @@ public class VoteController {
 
 		Voter voter = voterRepository.findByVoteIdAndUserId(voteId, user.getName());
 		Vote vote = voteRepository.findById(voteId);
-
+		String nowTime = getNowTime();
+		
 		if(voter != null){// 유권자일 경우
 			if (voter.getState() !=1){// 처음 투표한 경우.
 				// 여기에 Klaytn 소스 넣기.
 				// int id  = Integer.parseInt(axiosData.get("select"));
 				
 				// klaytn.klaytnSend(vote.getAddress(), 1);
+				
+				
 				ExecutorService es = Executors.newCachedThreadPool();
         
 				es.execute(() -> {
 					try {
 						// JSONObject message = klaytn.klaytnSend(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()));							
-						JSONObject message = klaytn.klaytnSend2(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()),202004280500L);							
+						JSONObject message = klaytn.klaytnSend2(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()),Long.parseLong(nowTime));							
 						
 						voter.setState(1);
 						voter.setHash(message.get("hash").toString());

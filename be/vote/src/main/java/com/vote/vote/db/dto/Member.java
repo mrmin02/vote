@@ -135,4 +135,7 @@ public class Member{
     public int getPoint(){
         return this.point;
     }
+    public String toString(){
+        return "no["+no+"] userid["+userid+"] password["+password+"] name[ "+name+"] gender[ "+gender+"] birth["+birth+"] nickname["+nickname+"] phone[ "+phone+"] addr[ "+addr+"] addr2["+addr2+"]";
+    }
 }

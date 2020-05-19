@@ -181,43 +181,22 @@ public class AuthController {
 
     // @Slf4j
     @RequestMapping(value="/register", method=RequestMethod.POST)
-    public String registerOk(
-            @RequestParam("id") String id,
-            @RequestParam("password") String pwd,
-            @RequestParam("username") String name,
-            @RequestParam("birth") String birth,
-            @RequestParam("phone") String phone,
-            @RequestParam("email") String email){
+    public String registerOk(Member mm, RedirectAttributes redirAttrs){
 
-        Member data = new Member();
-        
-        // data.setNo(1);
-        data.setUserid(id);
-        data.setPassword(pwd);
-        data.setName(name);
-        data.setBirth(birth);
-        data.setPhone(phone);
+        System.out.println("mm: "+mm);        
+
+        if(memberRepository.findByUserid(mm.getUserid()) == null){
+
+            memberRepository.saveAndFlush(mm);
+            return "redirect:/auth";
+        }else{
+            redirAttrs.addFlashAttribute("message", "아이디 중복확인을 해 주세요");
+            return "redirect:/auth/register";
+        }
 
         
-        memberRepository.saveAndFlush(data);
         
-
-        ExecutorService es = Executors.newCachedThreadPool();
         
-        // es.execute(() -> {
-        //     try {
-        //         JSONObject json = klaytn.createKey();
-        //         System.out.println(json);
-        //         data.setPrivateKey(json.get("privateKey").toString());
-        //         data.setAddress(json.get("address").toString());
-        //         memberRepository.saveAndFlush(data);
-        //         System.out.println("저장 성공?");
-        //     } catch (Exception e) {
-        //         System.out.println("클레이튼 오류 발생 : 계정 생성");
-        //     }
-        // });
-        
-        return "redirect:/auth";
     }
     public void createPrivateKey(Member data) throws Exception{
         ExecutorService es = Executors.newCachedThreadPool();

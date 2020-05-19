@@ -28,3 +28,6 @@ content{
     font-size: 18px;
     font-weight: 700;
 }
+.fail_message{
+    color:red;
+}

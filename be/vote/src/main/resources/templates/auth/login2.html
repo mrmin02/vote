@@ -24,6 +24,8 @@ th:replace="~{auth_layout::auth_layout(~{::content},_,~{::ss},~{::subTitle},~{::
                 </form>
                 <script src="../assets/login.js"></script>
             </div>
+            <br>
+            <div class="fail_message" th:text="${fail}"></div>
         </div>
         <div class="auth_right">
             <div class="item_right_text">Social Login</div>

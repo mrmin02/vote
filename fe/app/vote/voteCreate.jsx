@@ -102,8 +102,14 @@ class VoteCreate extends React.Component {
               <br/><br/><br/>
               
               <div id="vote_Create" className="vote_Create">
-                <div>title</div>
-                <input type="text" name="title"/>
+                <div>제목</div>
+                <input type="text" name="title" required/>
+
+                <div>시작시간</div>
+                <input type="datetime-local" name="startTime" required/>
+                <div>종료시간</div>
+                <input type="datetime-local" name="endTime" required/>
+
                 <div>content</div>
                 
                 선택지 개수 &nbsp;&nbsp;
@@ -114,11 +120,16 @@ class VoteCreate extends React.Component {
                 <label><input type="radio" name="count" value="5" onChange={this.changeSelect.bind(this,5)}/>5</label>&nbsp; */}
                 
                 <select id="select_num"  defaultValue={'2'} name="count" onChange={this.changeSelect.bind(this)}
-                className="">
+                required>
                   <option value="2" defaultValue>2</option>
                   <option value="3">3</option>
                   <option value="4">4</option>
                   <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
                 </select>
 
                 
