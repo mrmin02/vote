@@ -33,8 +33,6 @@ module.exports = {
     register: path.join(__dirname,'./app/register.js'),
     login: path.join(__dirname,'./app/login.js'),
     voteIndex: path.join(__dirname,'./app/vote/voteIndex.jsx'),
-    votePreIndex: path.join(__dirname,'./app/vote/votePreIndex.jsx'),
-    voteEndIndex: path.join(__dirname,'./app/vote/voteEndIndex.jsx'),
     voteCreate: path.join(__dirname,'./app/vote/voteCreate.jsx'),
     voteShow: path.join(__dirname,'./app/vote/voteShow.jsx'),
     voteResult: path.join(__dirname,'./app/vote/voteResult.jsx'),

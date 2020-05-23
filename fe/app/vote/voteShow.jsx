@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 import ItemCard from '../items/itemCard.jsx';
+import ItemCard2 from '../items/ItemCard2.jsx';
 import './voteShow.css'
 const axios = require('axios');
 
@@ -29,6 +30,8 @@ class VoteShow extends React.Component {
     sendSelect(index){
         const select  =  {"select" : index+1}
         console.log(select);
+        if(!confirm("해당 후보에 투표하시겠습니까?")) return;
+        
 
         axios.post('/vote/axios/'+param, select)
         .then((response)=>{
@@ -51,8 +54,9 @@ class VoteShow extends React.Component {
         return votes.map((vote,index)=>{
             if (vote.name != 0){
                 return (
-                    <div key={vote.name+index} className="card_div"> 
-                        <ItemCard key={vote.img} img={vote.img} name={vote.name} event={this.sendSelect.bind(this,index)}/>  
+                    <div key={vote.name+index} className="card_div" onClick={this.sendSelect.bind(this,index)}> 
+                        {/* <ItemCard key={vote.img} img={vote.img} name={vote.name} event={this.sendSelect.bind(this,index)}/>   */}
+                        <ItemCard2 key={vote.img} img={vote.img} name={vote.name}/>
                     </div>
                 )
             }
@@ -64,8 +68,7 @@ function Show(){
         return(
             <div>
                 <div><a href="/vote">목록으로 가기</a></div>
-                <VoteShow/>
-                
+                <VoteShow/>                
             </div>
         )
 }

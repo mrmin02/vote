@@ -2,20 +2,20 @@ package com.vote.vote.controller;
 
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
-
+import com.google.gson.Gson;
+import com.vote.vote.db.dto.Candidate;
 import com.vote.vote.db.dto.Member;
 import com.vote.vote.db.dto.Vote;
 import com.vote.vote.db.dto.Voter;
-import com.kenai.jffi.Array;
-import com.vote.vote.db.dto.Candidate;
 import com.vote.vote.klaytn.Klaytn;
 import com.vote.vote.repository.CandidateJpaRepository;
+import com.vote.vote.repository.CustomVoteRepositoy;
 import com.vote.vote.repository.MemberJpaRepository;
 import com.vote.vote.repository.VoteJpaRepository;
 import com.vote.vote.repository.VoterJpaRepository;
@@ -24,8 +24,9 @@ import com.vote.vote.service.StorageService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -57,72 +58,52 @@ public class VoteController {
 	@Autowired 
 	private VoterJpaRepository voterRepository;
 
+	@Autowired
+	private CustomVoteRepositoy customVoteRepositoy;
+
 
 	public Klaytn klaytn = new Klaytn();
 
-	// 진행중인 투표
+	
+
+	@ResponseBody
+	@RequestMapping(value={"/tttttt","/tttttt"}, method=RequestMethod.GET)
+	public JSONObject ttttt( Pageable page) { 
+		JSONObject json = new JSONObject();
+		json.put("page", page);
+		return json;
+	}
+
+	//  투표 메인
 	@RequestMapping(value={"","/"}, method=RequestMethod.GET)
 	public String index(Model model, Principal user) { 
 
 		return "vote/index";
 	}
-
-	// 시작전 투표
-	@RequestMapping(value={"/pre","/pre/"}, method=RequestMethod.GET)
-	public String preIndex(Model model, Principal user) { 
-
-		return "vote/preIndex";
-	}
-
-	//마감된 투표
-	@RequestMapping(value={"/end","/end/"}, method=RequestMethod.GET)
-	public String endIndex(Model model, Principal user) {
-
-		return "vote/endIndex";
-	}
-
-	//진행중 투표 리엑트
+	
+	// 투표 메인 페이지 axios
 	@RequestMapping(value={"/axios","/axios/"})
 	@ResponseBody
-	public JSONArray indexAxios(Principal user){
-		System.out.println("진행중");
+	public JSONArray indexMainAxios(Principal user, @Nullable String state, Pageable page){
+		System.out.println("투표 메인페이지");
 		String nowTime = getNowTime();
-
-		ArrayList<Vote> votes = voteRepository.findDoingVote(nowTime);
+		String type = "1";
+		System.out.println("state:"+state);
+		System.out.println("현재시각"+nowTime);
+		if(state != null)
+			type = state;
 		
+		
+		// List<Vote> votes = customVoteRepositoy.customFindVotes(nowTime,type,page);
+		List<Vote> votes = customVoteRepositoy.customFindVotes(nowTime,type,page);
+		long count = customVoteRepositoy.getFindVotesCount();
+
 		JSONArray json = createVoteList(votes);
+		
+		json.add(json.size(),count);
 
 		return json;
 	}
-
-	//시작전 투표 리엑트
-	@RequestMapping(value={"/pre/axios","/pre/axios/"})
-	@ResponseBody
-	public JSONArray preIndexAxios(Principal user){
-		System.out.println("시작전");
-		String nowTime = getNowTime();
-
-		ArrayList<Vote> votes = voteRepository.findPreVote(nowTime);
-		
-		JSONArray json = createVoteList(votes);
-
-		return json;
-	}
-
-	//마감된 투표 리엑트
-	@RequestMapping(value={"/end/axios","/end/axios/"})
-	@ResponseBody
-	public JSONArray endIndexAxios(Principal user){
-		System.out.println("마감");
-		String nowTime = getNowTime();
-
-		ArrayList<Vote> votes = voteRepository.findEndVote(nowTime);
-		
-		JSONArray json = createVoteList(votes);
-
-		return json;
-	}
-
 
 	public String getNowTime(){
 		Date time = new Date();
@@ -130,19 +111,24 @@ public class VoteController {
 		String nowTime = format.format(time);
 		return nowTime;
 	}
-	public JSONArray createVoteList(ArrayList<Vote> votes){
+
+
+	public JSONArray createVoteList(List<Vote> votes){
 		JSONArray json = new JSONArray();
 
 		for( Vote vote : votes){
 			JSONObject voteData = new JSONObject();
 			voteData.put("title", vote.getTitle());
 			voteData.put("id",vote.getId());
+			voteData.put("thumbnail",vote.getThumbnail());
 			// data.add(voteData);
 			json.add(voteData);
 		}
 
 		return json;
 	}
+
+
 
     @RequestMapping(value={"/create","/create/"})
 	public String create(Model model) {
@@ -158,11 +144,16 @@ public class VoteController {
 		@RequestParam(name="count") int count,
 		@RequestParam(name="startTime") String startTime,
 		@RequestParam(name="endTime") String endTime,
+		@RequestParam(name="thumbnail") MultipartFile thumbnail,
 		Principal user
 	){
 		
-		ArrayList<String> fileName = new ArrayList<String>();
+		storageService.store(thumbnail);
+		String thumbnailPath = StringUtils.cleanPath(thumbnail.getOriginalFilename());
 
+
+		ArrayList<String> fileName = new ArrayList<String>();
+		
 		for(int i=0;i<file.length;i++){
 			storageService.store(file[i]);   // 파일 저장
 			fileName.add(StringUtils.cleanPath(file[i].getOriginalFilename()));		// 파일 이름을 배열에 저장
@@ -180,6 +171,7 @@ public class VoteController {
 		data.setCount(count);
 		data.setStartTime(startTime_set);
 		data.setEndTIme(endTime_set);
+		data.setThumbnail(thumbnailPath);
         voteRepository.saveAndFlush(data);
         
         
@@ -285,8 +277,10 @@ public class VoteController {
 		Voter voter = voterRepository.findByVoteIdAndUserId(voteId, user.getName());
 		Vote vote = voteRepository.findById(voteId);
 		String nowTime = getNowTime();
-		
-		if(voter != null){// 유권자일 경우
+		if(!(Long.parseLong(nowTime) >= Long.parseLong(vote.getStartTime()) && Long.parseLong(nowTime)<Long.parseLong(vote.getEndTime()))){
+			result.put("message","해당 투표는 현재 진행중이지 않습니다.");
+		}
+		else if(voter != null){// 유권자일 경우
 			if (voter.getState() !=1){// 처음 투표한 경우.
 				// 여기에 Klaytn 소스 넣기.
 				// int id  = Integer.parseInt(axiosData.get("select"));

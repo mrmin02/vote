@@ -37,6 +37,9 @@ public class Vote{
     @Column(name="endTime", nullable=true)
     private String endTime;
 
+    @Column
+    private String thumbNail;
+
     public int getId(){
         return id;
     }
@@ -59,6 +62,10 @@ public class Vote{
     public String getEndTime(){
         return endTime;
     }
+    public String getThumbnail(){
+        return thumbNail;
+    }
+
 
     public void setId(int id){
         this.id = id;
@@ -81,6 +88,8 @@ public class Vote{
     public void setEndTIme(String endTime){
         this.endTime = endTime;
     }
-
+    public void setThumbnail(String thumbNail){
+        this.thumbNail = thumbNail;
+    }
 
 }

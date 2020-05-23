@@ -1,0 +1,36 @@
+.vote_option_div div{
+    display: inline;
+}
+
+.vote_option_div div:nth-child(n+2):not(:last-child){
+    border-right: 3px solid black;
+}
+.vote_option_div div{
+    padding: 0px 10px;
+}
+.vote_option_div a{
+    text-decoration: none;
+    color: black;
+}
+
+.vote_option_div a:hover{
+    color:purple;
+}
+
+
+/* voteIdexItem 에서 부르는 ItemCard2vertical 의 크기 */
+.vote_index_item{
+    display: inline-block;
+    width:300px;
+    height: 200px;
+    margin: 0px 14px;
+}
+
+.vote_index_item a{
+    text-decoration: none;
+    color: black;
+}
+.voteState:hover{
+    color:rgba(221, 44, 192, 1);
+}
+
