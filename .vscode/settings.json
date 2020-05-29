@@ -1,0 +1,5 @@
+{
+    "maven.executable.path": "\"maven.executable.path\": \"C:\\maven\\apache-maven-3.6.3\"",
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "git.ignoreLimitWarning": true
+}

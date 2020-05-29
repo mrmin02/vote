@@ -33,4 +33,9 @@
 .voteState:hover{
     color:rgba(221, 44, 192, 1);
 }
-
+.type:hover{
+    color:rgba(221, 44, 192, 1);
+}
+.program:hover{
+    color:rgba(221, 44, 192, 1);
+}

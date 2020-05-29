@@ -4,7 +4,7 @@ import Card from '@bit/nexxtway.react-rainbow.card';
 class ItemCard3 extends Component{
     constructor(props){
 		super(props);
-		console.log(this.props)
+		// console.log(this.props)
     }
 
     render(){

@@ -28,7 +28,7 @@ class VoteIndex extends Component {
     // }
     render() {
         const { data } = this.props;
-        console.log(this.props);
+        // console.log(this.props);
         return data.map((vote,index)=>{
             return (
                 <div key={'div'+index} className="vote_index_item">

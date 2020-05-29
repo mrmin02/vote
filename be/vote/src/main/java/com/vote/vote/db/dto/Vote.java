@@ -2,6 +2,7 @@ package com.vote.vote.db.dto;
 
 import java.util.Date;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.SequenceGenerator;
+
 
 @Entity
 @Table(name="vote")//name="vote" 생략가능
@@ -40,6 +42,10 @@ public class Vote{
     @Column
     private String thumbNail;
 
+    @Column(nullable=true)
+    private int program_id;
+
+
     public int getId(){
         return id;
     }
@@ -65,7 +71,9 @@ public class Vote{
     public String getThumbnail(){
         return thumbNail;
     }
-
+    public int getProgram_id(){
+        return this.program_id;
+    }
 
     public void setId(int id){
         this.id = id;
@@ -90,6 +98,9 @@ public class Vote{
     }
     public void setThumbnail(String thumbNail){
         this.thumbNail = thumbNail;
+    }
+    public void setProgram_id(int program_id){
+        this.program_id = program_id;
     }
 
 }

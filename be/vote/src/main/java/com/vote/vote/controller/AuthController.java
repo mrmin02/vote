@@ -1,6 +1,8 @@
 package com.vote.vote.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,8 +47,8 @@ public class AuthController {
     KakaoAPIService kakao;
 
     // @Autowired
-	// // @Qualifier("kakaoRestTemplate")
-	// private RestOperations kakaoRestTemplate;
+   // // @Qualifier("kakaoRestTemplate")
+   // private RestOperations kakaoRestTemplate;
 
 
     public AuthController(OAuth2AuthorizedClientService authorizedClientService) {
@@ -70,8 +72,8 @@ public class AuthController {
 
     ) throws IOException{
         // String returnUrl = "redirect:/login.do?error";
-		// ObjectNode result = (ObjectNode)kakaoRestTemplate.getForObject(
-		// 		"https://kapi.kakao.com/v2/user/me",ObjectNode.class);
+      // ObjectNode result = (ObjectNode)kakaoRestTemplate.getForObject(
+      //       "https://kapi.kakao.com/v2/user/me",ObjectNode.class);
 
         // System.out.println("result:  "+result);
 
@@ -97,6 +99,13 @@ public class AuthController {
                 newMember.setProfile("/img/defaultProfile.png");
             }
             
+            SimpleDateFormat format1 = new SimpleDateFormat ("yyyy-MM-dd");
+          Date time = new Date();
+          String time1 = format1.format(time);
+       
+            newMember.setJoindate(time1);
+            newMember.setRole("0");
+             
             memberRepository.saveAndFlush(newMember);
             System.out.println("회원가입 완료");
             try{
@@ -118,7 +127,7 @@ public class AuthController {
 
        
         // UserDetails.
-//			session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+//         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
         //  UserDetails 를 상속받아서 더 많은 정보를 가질 수 있게 해야 함.
         // UserDetails user = 
         // User
@@ -162,10 +171,11 @@ public class AuthController {
     @ResponseBody
     @RequestMapping(value= {"/register/checkId/{id}","/register/checkId/{id}/"},
     method=RequestMethod.GET,
-	produces = MediaType.APPLICATION_JSON_VALUE)
+   produces = MediaType.APPLICATION_JSON_VALUE)
     public JSONObject register_check_id(@PathVariable("id") String id){ // 로그인 뷰
         JSONObject result = new JSONObject();
-
+        System.out.println(id);
+        
 
         Member member = memberRepository.findByUserid(id);
         if(member == null){
@@ -175,7 +185,7 @@ public class AuthController {
             result.put("message", "이미 존재하는 아이디입니다.");
             result.put("check", 0);
         }
-        
+        System.out.println(result);
         return  result;
     }
 
@@ -187,6 +197,12 @@ public class AuthController {
 
         if(memberRepository.findByUserid(mm.getUserid()) == null){
 
+            SimpleDateFormat format1 = new SimpleDateFormat ("yyyy-MM-dd");
+          Date time = new Date();
+          String time1 = format1.format(time);
+       
+           mm.setJoindate(time1);
+           mm.setRole("0");
             memberRepository.saveAndFlush(mm);
             return "redirect:/auth";
         }else{

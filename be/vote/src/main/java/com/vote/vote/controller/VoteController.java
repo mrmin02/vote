@@ -8,15 +8,16 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.google.gson.Gson;
 import com.vote.vote.db.dto.Candidate;
 import com.vote.vote.db.dto.Member;
+import com.vote.vote.db.dto.Program;
 import com.vote.vote.db.dto.Vote;
 import com.vote.vote.db.dto.Voter;
 import com.vote.vote.klaytn.Klaytn;
 import com.vote.vote.repository.CandidateJpaRepository;
-import com.vote.vote.repository.CustomVoteRepositoy;
+import com.vote.vote.repository.CustomVoteRepository;
 import com.vote.vote.repository.MemberJpaRepository;
+import com.vote.vote.repository.ProgramJpaRepository;
 import com.vote.vote.repository.VoteJpaRepository;
 import com.vote.vote.repository.VoterJpaRepository;
 import com.vote.vote.service.StorageService;
@@ -59,20 +60,14 @@ public class VoteController {
 	private VoterJpaRepository voterRepository;
 
 	@Autowired
-	private CustomVoteRepositoy customVoteRepositoy;
+	private CustomVoteRepository customVoteRepository;
+
+	@Autowired
+	private ProgramJpaRepository programJpaRepository;
 
 
 	public Klaytn klaytn = new Klaytn();
 
-	
-
-	@ResponseBody
-	@RequestMapping(value={"/tttttt","/tttttt"}, method=RequestMethod.GET)
-	public JSONObject ttttt( Pageable page) { 
-		JSONObject json = new JSONObject();
-		json.put("page", page);
-		return json;
-	}
 
 	//  투표 메인
 	@RequestMapping(value={"","/"}, method=RequestMethod.GET)
@@ -84,19 +79,23 @@ public class VoteController {
 	// 투표 메인 페이지 axios
 	@RequestMapping(value={"/axios","/axios/"})
 	@ResponseBody
-	public JSONArray indexMainAxios(Principal user, @Nullable String state, Pageable page){
+	public JSONArray indexMainAxios(Principal user,Pageable page,
+	 int state,
+	 int program){
+
 		System.out.println("투표 메인페이지");
 		String nowTime = getNowTime();
-		String type = "1";
+		int type = state;
 		System.out.println("state:"+state);
 		System.out.println("현재시각"+nowTime);
-		if(state != null)
-			type = state;
+		System.out.println("프로그램 id"+program);
+		// if(state != null)
+		// 	type = state;
 		
 		
 		// List<Vote> votes = customVoteRepositoy.customFindVotes(nowTime,type,page);
-		List<Vote> votes = customVoteRepositoy.customFindVotes(nowTime,type,page);
-		long count = customVoteRepositoy.getFindVotesCount();
+		List<Vote> votes = customVoteRepository.customFindVotes(nowTime,page,type, program);
+		long count = customVoteRepository.getFindVotesCount();
 
 		JSONArray json = createVoteList(votes);
 		
@@ -134,7 +133,24 @@ public class VoteController {
 	public String create(Model model) {
 		return "vote/create";
 	}
-	
+
+	@ResponseBody
+	@RequestMapping(value={"/program/axios","/program/axios/"})
+	public JSONArray createAxios() {
+		
+		JSONArray result = new JSONArray();
+
+		List<Program> programList = programJpaRepository.findAll();
+
+		for(Program program : programList){
+			JSONObject json = new JSONObject();
+			json.put("id", program.getId());
+			json.put("name",program.getName());
+			result.add(json);
+		}
+
+		return result;
+	}
 	
 	@RequestMapping(value={"","/"}, method=RequestMethod.POST)
 	public String store(
@@ -229,7 +245,11 @@ public class VoteController {
 	}
 
 	@RequestMapping(value={"/{voteId}","/{voteId}/"})
-	public String show(Model model, @PathVariable("voteId") int voteId){
+	public String show(@PathVariable("voteId") int voteId){
+		Vote vote = voteRepository.findById(voteId);
+		// String time = getNowTime();
+		// if(time < vote.getEndTime())
+
 		return "vote/show";
 	}
 
@@ -242,26 +262,40 @@ public class VoteController {
 		// Vote vote = voteRepository.findById(voteId);
 		// Vote_img img = vote_imgRepository.findById(vote.getImg());
 		// Vote_name name = vote_nameRepository.findById(vote.getName());
-        ArrayList<Candidate> candidateList = candidateRepository.findByVoteId(voteId);
+		ArrayList<Candidate> candidateList = candidateRepository.findByVoteId(voteId);
+		
         
 		JSONArray array = new JSONArray();
         
-        ArrayList<String> names = new ArrayList<String>();
-		ArrayList<String> imgs = new ArrayList<String>();
+        // ArrayList<String> names = new ArrayList<String>();
+		// ArrayList<String> imgs = new ArrayList<String>();
         
-        for(int i=0; i<candidateList.size();i++){
-            names.add(candidateList.get(i).getName());
-            imgs.add(candidateList.get(i).getImg());
-        }
+        // for(int i=0; i<candidateList.size();i++){
+        //     names.add(candidateList.get(i).getName());
+        //     imgs.add(candidateList.get(i).getImg());
+		// }
+		
 
-		for(int i=0; i<names.size();i++){
+
+		for(int i=0; i<candidateList.size();i++){
 			JSONObject item = new JSONObject();
-			item.put("name", names.get(i));
-			item.put("img",imgs.get(i));
+			item.put("name", candidateList.get(i).getName());
+			item.put("img",candidateList.get(i).getImg());
 			array.add(item);
 		}
+		JSONObject voteInfo = new JSONObject();
+		Vote vote = voteRepository.findById(voteId);
+		voteInfo.put("title",vote.getTitle());
+
+		Program program = programJpaRepository.findById(vote.getProgram_id());
+
+		JSONArray result = new JSONArray();
+		result.add(0, array);
+		result.add(1, voteInfo);
+		result.add(2, program);
+
 			
-		return array;
+		return result;
 	}
 
 	@RequestMapping(value={"/axios/{voteId}","/axios/{voteId}/"},method=RequestMethod.POST,

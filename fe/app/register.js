@@ -95,7 +95,7 @@ class Register extends React.Component {
                             <td colSpan="2"><hr></hr></td>
                         </tr>
                         <tr>
-                            <td><input className="register_input" type="tel" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="010-1234-1234" required/></td>
+                            <td><input className="register_input" type="tel" name="phone"  pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required/></td>
                         </tr>
                         <tr>
                             <td ><input className="register_input" type="text" name="addr" placeholder="도로명 주소" required/></td>
