@@ -22,7 +22,7 @@ class Index extends Component{
         var parentsDiv = document.getElementById("program_option")
 
         const programOptionTitle = document.createElement("div");
-        programOptionTitle.innerHTML = "프로그램 : "
+        programOptionTitle.innerHTML = "프로그램 ▶ "
         parentsDiv.appendChild(programOptionTitle);
         data.map((program,index)=>{
             var div = document.createElement("div");
@@ -96,22 +96,35 @@ class Index extends Component{
         return(
             <div>
                 <h2>실시간 투표</h2>
-                <div>정렬</div>
-                <div className="vote_option_div">
-                    <div>투표상태 : </div>
-                    <div className="voteState type" title="0" onClick={this.clickTag.bind(this,0)}>시작전 투표</div>
-                    <div className="voteState type" title="1" onClick={this.clickTag.bind(this,1)}>진행중인 투표</div>
-                    <div className="voteState type" title="2" onClick={this.clickTag.bind(this,2)}>마감된 투표</div>
-                </div>
-                <div id="program_option"className="vote_option_div">
-                    {/* componentDidMount 에서 추가 */}
-                </div>
-                <div>
-                    <a href="/vote/create">투표 생성</a>
+                <div className="vote_options_select_div">
+                    <div className="options">
+                        <div>정렬</div>
+                        <div className="vote_option_div">
+                            <div>투표상태 ▶ </div>
+                            <div className="voteState type" title="0" onClick={this.clickTag.bind(this,0)}>시작전 투표</div>
+                            <div className="voteState type" title="1" onClick={this.clickTag.bind(this,1)}>진행중인 투표</div>
+                            <div className="voteState type" title="2" onClick={this.clickTag.bind(this,2)}>마감된 투표</div>
+                        </div>
+                        <div id="program_option"className="vote_option_div">
+                            {/* componentDidMount 에서 추가 */}
+                        </div>
+                        <div>
+                            <a href="/vote/create">투표 생성</a>
+                        </div>
+                    </div>
+                    <div className="search_vote">
+                        검색
+                        <input type="text"/>
+                    </div>
                 </div>
                 <br/><br/><br/>
-                <VoteIndex data={this.state.data}/>
-                <Pagination count={this.options.count} page={this.options.page} onChange={this.pageClick.bind(this)}/>
+                <div className="voteItem">
+                    <VoteIndex data={this.state.data}/>
+                </div>
+                <div className="pagingCenter">
+                    <Pagination count={this.options.count} page={this.options.page} onChange={this.pageClick.bind(this)}/>
+                </div>
+            
             </div>
         )
     }

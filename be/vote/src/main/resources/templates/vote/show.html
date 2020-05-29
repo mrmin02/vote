@@ -7,11 +7,25 @@ th:replace="~{main_layout::layout(~{::content},_,'실시간 투표')}">
 </head>
 <body>
     <content>
-        show view
-        <div id="voteShow">
-            <div data-react>123</div>
+
+        <div id="voteShow"></div>
+        <div th:switch="${type}">
+            <div th:case="'0'">
+                <!-- 시작전 -->
+                <script src="../assets/votePreShow.js"></script>        
+            </div>
+            <div th:case="'1'">
+                <!-- 진행중 -->
+                <script src="../assets/voteShow.js"></script>        
+            </div>
+            <div th:case="'2'">
+                <!-- 끝 -->
+                <script src="../assets/voteEndShow.js"></script>      
+            </div>
         </div>
-        <script src="../assets/voteShow.js"></script>
+        
+        
+        
         <!-- <div th:text="${vote.getTitle()}"></div>
 
         <div th:each="item : ${items}">

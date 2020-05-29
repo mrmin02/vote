@@ -161,6 +161,7 @@ public class VoteController {
 		@RequestParam(name="startTime") String startTime,
 		@RequestParam(name="endTime") String endTime,
 		@RequestParam(name="thumbnail") MultipartFile thumbnail,
+		@RequestParam(name="program_id") int programId,
 		Principal user
 	){
 		
@@ -188,6 +189,7 @@ public class VoteController {
 		data.setStartTime(startTime_set);
 		data.setEndTIme(endTime_set);
 		data.setThumbnail(thumbnailPath);
+		data.setProgram_id(programId);
         voteRepository.saveAndFlush(data);
         
         
@@ -245,11 +247,19 @@ public class VoteController {
 	}
 
 	@RequestMapping(value={"/{voteId}","/{voteId}/"})
-	public String show(@PathVariable("voteId") int voteId){
+	public String show(Model model, @PathVariable("voteId") int voteId){
 		Vote vote = voteRepository.findById(voteId);
-		// String time = getNowTime();
-		// if(time < vote.getEndTime())
-
+		Long time = Long.parseLong(getNowTime());
+		
+		model.addAttribute("type", 1);
+		if(time < Long.parseLong(vote.getStartTime())){//시작전
+			System.out.println("시작전 투표");
+			model.addAttribute("type", 0);
+		}else if(time >= Long.parseLong(vote.getEndTime())){// 마감
+			System.out.println("마감된 투표");
+			model.addAttribute("type", 2);
+		}
+		// 진행중인 투표
 		return "vote/show";
 	}
 

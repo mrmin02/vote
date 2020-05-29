@@ -65,6 +65,8 @@ class VoteCreate extends React.Component {
         var option = document.createElement("option");
         option.value = program.id;
         option.text = program.name;
+        if(index == 0)
+          option.defaultSelected = true;
         select.appendChild(option);
       })
             

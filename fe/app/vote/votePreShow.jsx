@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 import ItemCard2 from '../items/ItemCard2.jsx';
-
+import ItemCard3 from '../items/itemCard3.jsx';
+// import './voteShow.css'
 import './votePreShow.css'
-import './css/voteDoShow.css'
 const axios = require('axios');
 
 var url = document.location.href;
@@ -24,8 +24,7 @@ class VoteShow extends React.Component {
         return this.props.votes.map((vote,index)=>{
             if (vote.name != 0){
                 return (
-                    <div key={vote.name+index} className="card_div" onClick={this.props.event.bind(this,index)}> 
-                        {/* <ItemCard key={vote.img} img={vote.img} name={vote.name} event={this.sendSelect.bind(this,index)}/>   */}
+                    <div key={vote.name+index} className="card_div"> 
                         <ItemCard2 key={vote.img} img={vote.img} name={vote.name}/>
                     </div>
                 )
@@ -44,31 +43,12 @@ class Show extends React.Component{
 
     async componentDidMount(){
         let {data} = await axios.get('/vote/axios/'+param);
-        // console.log(data[0]);
+        console.log(data);
         this.setState({votes : data[0], title : data[1], program:data[2]});
         console.log(data);
         
     }
 
-    sendSelect(index){
-        const select  =  {"select" : index+1}
-        console.log(select);
-        if(!confirm("해당 후보에 투표하시겠습니까?")) return;
-        
-
-        axios.post('/vote/axios/'+param, select)
-        .then((response)=>{
-            if(response.data.errorMessage){
-                alert(response.data.errorMessage);
-                window.location.href="/vote";
-            }else{
-                alert(response.data.message);
-                window.location.href="/vote";
-            }
-        });
-        
-
-    }
     render(){
         const {title} = this.state.title
         
@@ -76,25 +56,28 @@ class Show extends React.Component{
             <div id="itemTopDiv">
                 <div className="topDiv">
                     <h2>투표</h2>
-                    <div className="circle">투표 진행중</div>
-                    {/* https://basketdeveloper.tistory.com/4 */}
+                    <div className="circle">투표 시작전</div>
                 </div>
                 
                 <div className="list_a_tag"><a href="/vote">목록</a></div>
-                <div className="div_center"><h3>{title}</h3></div>
-                <div className="left_right_box">
-                    <div id="item">
-                        <div className="candidate">&lt;&lt; 후보 정보 &gt;&gt;</div>
-                        <div className="candidate_op">**후보 클릭 시 투표가능**</div>
-                        <div className="cards">
-                            <VoteShow votes={this.state.votes} event={this.sendSelect} />   
+                <div id="item">
+                    <div className="div_center"><h3>{title}</h3></div>
+                    <div id="program_info">
+                        <div className="img">
+                        <ItemCard3 img={this.state.program.img}title={this.state.program.name}/>
+                        </div>                    
+                        <div className="info">
+                            <div className="div_center">프로그램 소개</div>
+                            <div>소개내용을 추가하세요</div>
                         </div>
-                    </div>        
-                    <div className="right_div_box">
-                        실시간 투표 결과관련 내용 출력 예정
                     </div>
-                </div>
-                     
+                    <div className="candidate">&lt;&lt; 후보 정보 &gt;&gt;</div>
+                    <div className="candidate_op">**후보 클릭 시 관련 정보로 이동**</div>
+                    <div className="cards">
+                        <VoteShow votes={this.state.votes} />   
+                    </div>
+                    
+                </div>             
             </div>
         )
     }

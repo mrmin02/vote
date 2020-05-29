@@ -24,7 +24,7 @@ class VoteShow extends React.Component {
         return this.props.votes.map((vote,index)=>{
             if (vote.name != 0){
                 return (
-                    <div key={vote.name+index} className="card_div" onClick={this.props.event.bind(this,index)}> 
+                    <div key={vote.name+index} className="card_div" > 
                         {/* <ItemCard key={vote.img} img={vote.img} name={vote.name} event={this.sendSelect.bind(this,index)}/>   */}
                         <ItemCard2 key={vote.img} img={vote.img} name={vote.name}/>
                     </div>
@@ -50,25 +50,6 @@ class Show extends React.Component{
         
     }
 
-    sendSelect(index){
-        const select  =  {"select" : index+1}
-        console.log(select);
-        if(!confirm("해당 후보에 투표하시겠습니까?")) return;
-        
-
-        axios.post('/vote/axios/'+param, select)
-        .then((response)=>{
-            if(response.data.errorMessage){
-                alert(response.data.errorMessage);
-                window.location.href="/vote";
-            }else{
-                alert(response.data.message);
-                window.location.href="/vote";
-            }
-        });
-        
-
-    }
     render(){
         const {title} = this.state.title
         
@@ -76,7 +57,7 @@ class Show extends React.Component{
             <div id="itemTopDiv">
                 <div className="topDiv">
                     <h2>투표</h2>
-                    <div className="circle">투표 진행중</div>
+                    <div className="circle">투표 마감</div>
                     {/* https://basketdeveloper.tistory.com/4 */}
                 </div>
                 
@@ -85,9 +66,9 @@ class Show extends React.Component{
                 <div className="left_right_box">
                     <div id="item">
                         <div className="candidate">&lt;&lt; 후보 정보 &gt;&gt;</div>
-                        <div className="candidate_op">**후보 클릭 시 투표가능**</div>
+                        <div className="candidate_op">**마감된 투표입니다.**</div>
                         <div className="cards">
-                            <VoteShow votes={this.state.votes} event={this.sendSelect} />   
+                            <VoteShow votes={this.state.votes}/>   
                         </div>
                     </div>        
                     <div className="right_div_box">

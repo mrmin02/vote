@@ -1,0 +1,91 @@
+body{
+    font-family:none;
+}
+.card_div{
+    /* display: inline-block; */
+    width: auto;
+    /* float: left;  */
+    /* margin-left: 50px; */
+}
+
+/* .topDiv{
+    display: grid;
+
+} */
+.topDiv h2{
+    display: inline;
+    padding:10px;
+}
+.circle{
+    display: inline;
+    float: right;
+    background-color: rgba(221, 44, 192, 1);
+    color: white;
+    padding: 10px;
+    border-radius: 15px;
+}
+.list_a_tag{
+    display: inline-block;
+    margin-top: 35px;
+    padding: 10px;
+    background-color: rgba(221, 44, 192, 1);
+    color: white;   
+    border-radius: 15px;
+}
+.list_a_tag a{
+    text-decoration: none;
+    color: white;   
+}
+#itemTopDiv{
+    width:80%;
+    margin: auto;
+    margin-top: 15px;
+}
+
+
+#item{
+    width: 64%;
+    margin: auto;
+}
+#program_info{
+    display: flex;
+    width:100%;
+    margin: auto;
+}
+#program_info article {
+    display: inline-block !important;
+}
+#program_info div.img {
+    display: inline;
+    background: yellow;
+}
+#program_info div.info {
+    float: right;
+    width: 300px;
+    background: palegreen;
+    margin-left: 40px;;
+}
+.candidate_op{
+    text-align: center;
+    color:rgba(221, 44, 192, 1)
+}
+
+.div_center{
+    font-size: large;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.candidate{
+    text-align: center;
+    font: 400;
+    margin-top: 50px;
+}
+.cards{
+    text-align: -webkit-center;
+}
+.htjeoY {
+    margin: 0px !important; 
+}
+.ivZCRl{
+    width:300px !important;
+}

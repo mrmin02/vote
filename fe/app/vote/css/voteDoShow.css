@@ -1,0 +1,9 @@
+#item{
+    width: 100% !important;
+    border-right: 2px solid gray;
+}
+.left_right_box{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    column-gap:15px;
+}
