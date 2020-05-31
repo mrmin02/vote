@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
-import ItemCard2 from '../items/ItemCard2.jsx';
-import ItemCard3 from '../items/itemCard3.jsx';
+import ItemCard2 from '../items/itemCard2.jsx';
+import ItemCard3 from '../items/itemCard3_big.jsx';
 // import './voteShow.css'
 import './votePreShow.css'
 const axios = require('axios');
@@ -37,21 +37,32 @@ class Show extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신"}};
-        this.aa = "aaa";
+        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신"}, date:{startTime:"000",endTime:"0000"}};
+        this.stTime;
+        this.edTime;
     }
 
     async componentDidMount(){
         let {data} = await axios.get('/vote/axios/'+param);
         console.log(data);
-        this.setState({votes : data[0], title : data[1], program:data[2]});
+        this.setState({votes : data[0], title : data[1], program:data[2], date: data[3]});
         console.log(data);
+
         
     }
+    setDate(){
+        console.log("set")
+        var start = this.state.date.startTime;
+        var end = this.state.date.endTime;
 
+        this.stTime = start.substr(0,4)+"-"+start.substr(4,2)+"-"+start.substr(6,2)+" "+start. substr(8,2)+":"+start.substr(10,2);
+        this.edTime = end.substr(0,4)+"-"+end.substr(4,2)+"-"+end.substr(6,2)+" "+end. substr(8,2)+":"+end.substr(10,2);
+        console.log("stTime: "+this.stTime+"\n"+"edTime: "+this.edTime);
+    }
     render(){
         const {title} = this.state.title
-        
+        this.setDate();
+        console.log("render")
         return(
             <div id="itemTopDiv">
                 <div className="topDiv">
@@ -71,6 +82,9 @@ class Show extends React.Component{
                             <div>소개내용을 추가하세요</div>
                         </div>
                     </div>
+                    <div className="text_center br_div">투표기간</div>
+                    <div className="text_center">시작: {this.stTime}</div>
+                    <div className="text_center">마감: {this.edTime}</div>
                     <div className="candidate">&lt;&lt; 후보 정보 &gt;&gt;</div>
                     <div className="candidate_op">**후보 클릭 시 관련 정보로 이동**</div>
                     <div className="cards">

@@ -252,10 +252,10 @@ public class VoteController {
 		Long time = Long.parseLong(getNowTime());
 		
 		model.addAttribute("type", 1);
-		if(time < Long.parseLong(vote.getStartTime())){//시작전
+		if(time < vote.getLongStartTime()){//시작전
 			System.out.println("시작전 투표");
 			model.addAttribute("type", 0);
-		}else if(time >= Long.parseLong(vote.getEndTime())){// 마감
+		}else if(time >= vote.getLongEndTime()){// 마감
 			System.out.println("마감된 투표");
 			model.addAttribute("type", 2);
 		}
@@ -299,11 +299,15 @@ public class VoteController {
 
 		Program program = programJpaRepository.findById(vote.getProgram_id());
 
+		JSONObject date = new JSONObject();
+		date.put("startTime", vote.getStartTime());
+		date.put("endTime", vote.getEndTime());
+
 		JSONArray result = new JSONArray();
 		result.add(0, array);
 		result.add(1, voteInfo);
 		result.add(2, program);
-
+		result.add(3, date);
 			
 		return result;
 	}
@@ -321,7 +325,7 @@ public class VoteController {
 		Voter voter = voterRepository.findByVoteIdAndUserId(voteId, user.getName());
 		Vote vote = voteRepository.findById(voteId);
 		String nowTime = getNowTime();
-		if(!(Long.parseLong(nowTime) >= Long.parseLong(vote.getStartTime()) && Long.parseLong(nowTime)<Long.parseLong(vote.getEndTime()))){
+		if(!(Long.parseLong(nowTime) >= vote.getLongStartTime() && Long.parseLong(nowTime)<vote.getLongEndTime())){
 			result.put("message","해당 투표는 현재 진행중이지 않습니다.");
 		}
 		else if(voter != null){// 유권자일 경우

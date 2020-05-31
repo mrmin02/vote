@@ -74,6 +74,12 @@ public class Vote{
     public int getProgram_id(){
         return this.program_id;
     }
+    public Long getLongStartTime(){
+        return Long.parseLong(this.startTime.replaceAll("[^0-9]",""));
+    }
+    public Long getLongEndTime(){
+        return Long.parseLong(this.endTime.replaceAll("[^0-9]",""));
+    }
 
     public void setId(int id){
         this.id = id;

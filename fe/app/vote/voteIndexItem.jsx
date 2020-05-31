@@ -1,6 +1,6 @@
 import React, {Component}from 'react'
 import ReactDOM from 'react-dom';
-import ItemCard3 from '../items/ItemCard3.jsx';
+import ItemCard3 from '../items/itemCard3_big.jsx';
 import './voteIndex.css';
 import { Pagination } from '@material-ui/lab';
 
@@ -35,7 +35,7 @@ class VoteIndex extends Component {
                     <a href={"/vote/"+vote.id}>
                         <ItemCard3 img={vote.thumbnail} title={vote.title}/>
                     </a>
-                    <a href={'/vote/result/'+vote.id}>실시간 투표 결과</a>
+                    {/* <a href={'/vote/result/'+vote.id}>실시간 투표 결과</a> */}
                 </div>
             )
         })

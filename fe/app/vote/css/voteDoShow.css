@@ -7,3 +7,20 @@
     grid-template-columns: 50% 50%;
     column-gap:15px;
 }
+#voteDate{
+    margin: 15px;
+}
+.show_result{
+    text-align: center;
+    color:rgba(221, 44, 192, 1)
+}
+
+.right_div_box{
+    margin-top: 50px;
+}
+
+.vote_result{
+    top: 15%;
+    position: relative;
+    text-align: -webkit-center;
+}

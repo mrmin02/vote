@@ -80,6 +80,14 @@ body{
     font: 400;
     margin-top: 50px;
 }
+
+.text_center{
+    text-align: center;
+}
+.br_div{
+    margin-top: 20px;
+}
+
 .cards{
     text-align: -webkit-center;
 }

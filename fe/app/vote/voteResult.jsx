@@ -104,7 +104,8 @@ class Result extends Component{
 }
 
 
-ReactDOM.render(<Result/>,document.getElementById('voteResult'));
+// ReactDOM.render(<Result/>,document.getElementById('voteResult'));
+export default VoteResult
 
 
 
