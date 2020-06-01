@@ -9,7 +9,12 @@ main {
 /*    align 은 컨텐츠에 알맞게 수정*/
 margin-bottom: 50px;
 }
-
+.menu > a{
+    display: inline !important;
+}
+.dropMenu a{
+    display: block !important;
+}
 /* .contents{
     margin-bottom: 50px;
 } */
