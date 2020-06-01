@@ -57,12 +57,12 @@ body{
 }
 #program_info div.img {
     display: inline;
-    background: yellow;
+    /* background: yellow; */
 }
 #program_info div.info {
     float: right;
     width: 300px;
-    background: palegreen;
+    /* background: palegreen; */
     margin-left: 40px;;
 }
 .candidate_op{
@@ -87,7 +87,9 @@ body{
 .br_div{
     margin-top: 20px;
 }
-
+.textColor{
+    color:rgba(221, 44, 192, 1)
+}
 .cards{
     text-align: -webkit-center;
 }

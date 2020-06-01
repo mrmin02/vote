@@ -11,8 +11,8 @@ class Index extends Component{
     constructor(props){
         super(props);
         this.state = { data: [] };
-        this.options = {type: 1,page : 1, size : 6, sort : "id", count: 1, program: 0};
-        this.url = "/vote/axios?page="+(this.options.page-1)+"&size="+this.options.size+"&sort="+this.options.sort+"&state="+this.options.type+"&program="+this.options.program;
+        this.options = {type: 1,page : 1, size : 6, sort : "id", count: 1, program: 0, text: ""};
+        this.url = "/vote/axios?page="+(this.options.page-1)+"&size="+this.options.size+"&sort="+this.options.sort+"&state="+this.options.type+"&program="+this.options.program+"&text="+this.options.text;
         
     }
     async componentDidMount(){
@@ -37,6 +37,7 @@ class Index extends Component{
         })
     }
     async getVoteItemWithOptionPaging(){
+        // console.log(this.url)
         let {data} = await axios.get(this.url);
         // this.options.count=data.pop(); 
         this.options.count = Math.ceil((data.pop()*1.0)/this.options.size);
@@ -61,7 +62,7 @@ class Index extends Component{
         this.getVoteItemWithOptionPaging();
     }
     setUrl(){
-        this.url = "/vote/axios?page="+(this.options.page-1)+"&size="+this.options.size+"&sort="+this.options.sort+"&state="+this.options.type+"&program="+this.options.program;
+        this.url = "/vote/axios?page="+(this.options.page-1)+"&size="+this.options.size+"&sort="+this.options.sort+"&state="+this.options.type+"&program="+this.options.program+"&text="+this.options.text;
     }
     pageClick(e, page){
         this.options.page = page;
@@ -76,6 +77,21 @@ class Index extends Component{
     //     this.options.count = count;
     //     // <VoteIndex url={this.url} getCount={this.getCount.bind(this)}/>
     // }
+
+    onSearchEvnet(){
+        console.log("버튼 클릭");
+        const text = document.getElementById("searchInput").value
+        // if(!text){
+        //     return alert("검색어를 입력하세요")
+        // }
+        
+        this.options.text = text;
+        
+        this.setUrl();
+        this.getVoteItemWithOptionPaging();
+
+    }
+
     render(){
         const clickTypes = document.getElementsByClassName("type")
         const clickProgram = document.getElementsByClassName("program")
@@ -114,7 +130,8 @@ class Index extends Component{
                     </div>
                     <div className="search_vote">
                         검색
-                        <input type="text"/>
+                        <input type="text" id="searchInput"/>
+                        <button type="click" onClick={this.onSearchEvnet.bind(this)}>검색</button>
                     </div>
                 </div>
                 <br/><br/><br/>

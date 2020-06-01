@@ -26,7 +26,7 @@ class VoteShow extends React.Component {
                 return (
                     <div key={vote.name+index} className="card_div" onClick={this.props.event.bind(this,index)}> 
                         {/* <ItemCard key={vote.img} img={vote.img} name={vote.name} event={this.sendSelect.bind(this,index)}/>   */}
-                        <ItemCard2 key={vote.img} img={vote.img} name={vote.name}/>
+                        <ItemCard2 key={vote.img} img={vote.img} name={vote.name} info={vote.info}/>
                     </div>
                 )
             }
@@ -38,7 +38,7 @@ class Show extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신"},date:{startTime:"000",endTime:"0000"}};
+        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신"},date:{startTime:"000",endTime:"0000", resultShowTime:"0000"}};
         this.aa = "aaa";
         this.edTime;//종료 시간
         this.stTime;//현재시간, 타이머 시작 시간
@@ -46,7 +46,7 @@ class Show extends React.Component{
 
         this.divStTime;// 투표기간 표시 ( 시작날짜 )
         this.divEdTime;// 투표기간 표시 ( 마감 날짜 )
-
+        this.divRsTime;// 투표 집계공개 시각
     }
 
     async componentDidMount(){
@@ -67,7 +67,7 @@ class Show extends React.Component{
         
     }
     parseTime(){
-        var time = this.state.date.endTime;
+        var time = String(this.state.date.endTime);
         console.log(time);
         var y = time.substr(0,4);
         var m = time.substr(4,2)
@@ -95,6 +95,7 @@ class Show extends React.Component{
             // 시간이 종료 되었으면..
             clearInterval(interval);   // 타이머 해제
             alert("투표가 마감되었습니다.");
+            location.reload()
         }else{
             this.rmTime = this.rmTime - 1000; // 남은시간 -1초
         }
@@ -110,10 +111,13 @@ class Show extends React.Component{
         .then((response)=>{
             if(response.data.errorMessage){
                 alert(response.data.errorMessage);
-                window.location.href="/vote";
+                // window.location.href="/vote";
+                if(confirm("투표 목록으로 돌아가시겠습니까?"))
+                    window.location.href="/vote";
             }else{
                 alert(response.data.message);
-                window.location.href="/vote";
+                window.location.reload();
+                
             }
         });
         
@@ -121,12 +125,13 @@ class Show extends React.Component{
     }
     setDate(){
         // console.log("set")
-        var start = this.state.date.startTime;
-        var end = this.state.date.endTime;
+        var start = String(this.state.date.startTime);
+        var end = String(this.state.date.endTime);
+        var rst = String(this.state.date.resultShowTime);
 
         this.divStTime = start.substr(0,4)+"-"+start.substr(4,2)+"-"+start.substr(6,2)+" "+start. substr(8,2)+":"+start.substr(10,2);
         this.divEdTime = end.substr(0,4)+"-"+end.substr(4,2)+"-"+end.substr(6,2)+" "+end. substr(8,2)+":"+end.substr(10,2);
-
+        this.divRsTime = rst.substr(0,4)+"-"+rst.substr(4,2)+"-"+rst.substr(6,2)+" "+rst. substr(8,2)+":"+rst.substr(10,2);
     }
     render(){
         const {title} = this.state.title
@@ -145,6 +150,7 @@ class Show extends React.Component{
                     <div className="text_center br_div">투표기간</div>
                     <div className="text_center">시작: {this.divStTime}</div>
                     <div className="text_center">마감: {this.divEdTime}</div>
+                    <div className="text_center">집계공개: {this.divRsTime}</div>
                 </div>
                 <div className="left_right_box">
                     <div id="item">

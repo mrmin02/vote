@@ -7,5 +7,9 @@ main {
     margin: 100px;
     /* text-align: center; */
 /*    align 은 컨텐츠에 알맞게 수정*/
-    
+margin-bottom: 50px;
 }
+
+/* .contents{
+    margin-bottom: 50px;
+} */

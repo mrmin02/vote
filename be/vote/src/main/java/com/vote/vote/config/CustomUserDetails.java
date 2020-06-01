@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetails implements UserDetails{
 
+	private int R_ID;
     private String ID;
 	private String PASSWORD;
     private String NAME;
@@ -75,4 +76,12 @@ public class CustomUserDetails implements UserDetails{
     public void setAUTHORITY(String authority){
         AUTHORITY = authority;
     }
+
+	public int getR_ID() {
+		return R_ID;
+	}
+
+	public void setR_ID(int r_ID) {
+		R_ID = r_ID;
+	}
 }

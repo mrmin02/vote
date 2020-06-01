@@ -34,7 +34,7 @@ public class CustomVoteRepositoryImpl extends QuerydslRepositorySupport implemen
     }
 
     @Override
-    public List<Vote> customFindVotes(String time, Pageable page, int state, int program){//시간
+    public List<Vote> customFindVotes(String time, Pageable page, int state, int program, String text){//시간
         JPAQueryFactory query = new JPAQueryFactory(em);
 
 
@@ -60,7 +60,11 @@ public class CustomVoteRepositoryImpl extends QuerydslRepositorySupport implemen
             System.out.println("전체 프로그램");
         }else{
             System.out.println(program+" 번 프로그램의 투표");
-            booleanBuilder.and(vote.program_id.eq(program));
+            booleanBuilder.and(vote.programId.eq(program));
+        }
+
+        if(text != " "){// 검색어가 있는 경우..
+            booleanBuilder.and(vote.title.contains(text));
         }
 
         List<Vote> voteList =  query.select(vote).from(vote).offset(page.getOffset()).limit(page.getPageSize()).where(booleanBuilder).fetch();

@@ -24,3 +24,11 @@
     position: relative;
     text-align: -webkit-center;
 }
+.progress{
+    text-align: left;
+}
+.progress-meter-text{
+    /* text-align: center !important; */
+    /* margin-left: 100% !important; */
+    left : 50px !important;
+}

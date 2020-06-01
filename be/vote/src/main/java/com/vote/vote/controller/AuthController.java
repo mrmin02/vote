@@ -138,6 +138,7 @@ public class AuthController {
         //     .roles("USER")
         // .build();
         CustomUserDetails user2 = new CustomUserDetails();
+        user2.setR_ID(Integer.parseInt(userInfo.get("id").toString()));
         user2.setID(userInfo.get("id").toString());
         user2.setPASSWORD(userInfo.get("id").toString());
         user2.setNAME(userInfo.get("name").toString());

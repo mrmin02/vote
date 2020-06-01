@@ -8,17 +8,19 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.vote.vote.config.CustomUserDetails;
 import com.vote.vote.db.dto.Candidate;
-import com.vote.vote.db.dto.Member;
 import com.vote.vote.db.dto.Program;
 import com.vote.vote.db.dto.Vote;
 import com.vote.vote.db.dto.Voter;
+import com.vote.vote.db.dto.VoterHash;
 import com.vote.vote.klaytn.Klaytn;
 import com.vote.vote.repository.CandidateJpaRepository;
 import com.vote.vote.repository.CustomVoteRepository;
 import com.vote.vote.repository.MemberJpaRepository;
 import com.vote.vote.repository.ProgramJpaRepository;
 import com.vote.vote.repository.VoteJpaRepository;
+import com.vote.vote.repository.VoterHashJpaRepository;
 import com.vote.vote.repository.VoterJpaRepository;
 import com.vote.vote.service.StorageService;
 
@@ -28,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -65,6 +68,9 @@ public class VoteController {
 	@Autowired
 	private ProgramJpaRepository programJpaRepository;
 
+	@Autowired
+	private VoterHashJpaRepository voterHashRepository;
+
 
 	public Klaytn klaytn = new Klaytn();
 
@@ -72,6 +78,11 @@ public class VoteController {
 	//  투표 메인
 	@RequestMapping(value={"","/"}, method=RequestMethod.GET)
 	public String index(Model model, Principal user) { 
+		// System.out.println("user.getName:"+user.getName());
+
+		// @Nullable Authentication authentication
+		// CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		// System.out.println(userDetails.getR_ID());
 
 		return "vote/index";
 	}
@@ -81,7 +92,7 @@ public class VoteController {
 	@ResponseBody
 	public JSONArray indexMainAxios(Principal user,Pageable page,
 	 int state,
-	 int program){
+	 int program, @Nullable String text){
 
 		System.out.println("투표 메인페이지");
 		String nowTime = getNowTime();
@@ -91,10 +102,14 @@ public class VoteController {
 		System.out.println("프로그램 id"+program);
 		// if(state != null)
 		// 	type = state;
+		String searchText = " ";
+		if(text != null){// text 가 있으면..
+			searchText = text;
+		}
 		
 		
 		// List<Vote> votes = customVoteRepositoy.customFindVotes(nowTime,type,page);
-		List<Vote> votes = customVoteRepository.customFindVotes(nowTime,page,type, program);
+		List<Vote> votes = customVoteRepository.customFindVotes(nowTime,page,type, program,searchText);
 		long count = customVoteRepository.getFindVotesCount();
 
 		JSONArray json = createVoteList(votes);
@@ -154,17 +169,25 @@ public class VoteController {
 	
 	@RequestMapping(value={"","/"}, method=RequestMethod.POST)
 	public String store(
-		@RequestParam(name="title") String title,
-		@RequestParam(name="file") MultipartFile[] file,
-		@RequestParam(name="name") ArrayList<String> names,
-		@RequestParam(name="count") int count,
-		@RequestParam(name="startTime") String startTime,
-		@RequestParam(name="endTime") String endTime,
-		@RequestParam(name="thumbnail") MultipartFile thumbnail,
-		@RequestParam(name="program_id") int programId,
-		Principal user
+		@RequestParam(name="title") String title, // 투표 이름
+		@RequestParam(name="file") MultipartFile[] file, // 후보자 사진
+		@RequestParam(name="name") ArrayList<String> names, // 후보자 이름
+		@RequestParam(name="count") int count, // 후보자 수
+		@RequestParam(name="startTime") String startTime, // 시작시간
+		@RequestParam(name="endTime") String endTime, // 마감 시간
+		@RequestParam(name="thumbnail") MultipartFile thumbnail, // 섬네일
+		@RequestParam(name="program_id") int programId, // 프로그램 id 
+		@RequestParam(name="info") ArrayList<String> infos, // 후보자 설명,
+		@RequestParam(name="selectNum") int selectNum,// 선발인원
+		@RequestParam(name="voteCanNum") int voteCanNum,// 다중투표 수
+		@RequestParam(name="resultShowTime") String resultShowTime, // 결과 공개시간
+		@RequestParam(name="show") int showState, //공개 여부 ( 0 : 공개, 1: 비공개)
+		Principal user,@Nullable Authentication authentication
 	){
-		
+		// @Nullable Authentication authentication
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		System.out.println(userDetails);
+
 		storageService.store(thumbnail);
 		String thumbnailPath = StringUtils.cleanPath(thumbnail.getOriginalFilename());
 
@@ -181,15 +204,19 @@ public class VoteController {
 		// string 에서 숫자만 추출   기본 값: 년-월-일T시:분
 		String startTime_set = startTime.replaceAll("[^0-9]","");
 		String endTime_set = endTime.replaceAll("[^0-9]","");
-
+		// String resultShowTime_set = resultShowTime.replaceAll("[^0-9]","");
 
 		data.setTitle(title);
-		data.setWriter(user.getName());
+		data.setMemberId(userDetails.getR_ID());
 		data.setCount(count);
 		data.setStartTime(startTime_set);
 		data.setEndTIme(endTime_set);
 		data.setThumbnail(thumbnailPath);
-		data.setProgram_id(programId);
+		data.setProgramId(programId);
+		data.setSelectNum(selectNum);
+		data.setVoteCanNum(voteCanNum);
+		data.setShowState(showState);
+		data.setResultShowTime(resultShowTime);
         voteRepository.saveAndFlush(data);
         
         
@@ -198,7 +225,8 @@ public class VoteController {
             Candidate candidate =  new Candidate();
             candidate.setVoteId(data.getId());
             candidate.setImg(fileName.get(i));
-            candidate.setName(names.get(i));
+			candidate.setName(names.get(i));
+			candidate.setInfo(infos.get(i));
             candidateRepository.saveAndFlush(candidate);
         }
         
@@ -216,6 +244,9 @@ public class VoteController {
 
 				voteRepository.saveAndFlush(data);
 				
+
+					//resultShowTime  결과 공개 시간 and showState 를 포함시킨걸로 새로 만들어야 함.
+
 				//스마트 컨트랙트 배포후에 투표 시작시간, 끝 시간 세팅
 				JSONObject json2 = klaytn.klaytnSetOptions(json.get("address").toString(), Long.parseLong(startTime_set), Long.parseLong(endTime_set), count);
 				System.out.println(json2);
@@ -229,18 +260,18 @@ public class VoteController {
 
 		
 		// 모든 회원들에게 투표 권한 줌  // 나중에 로직 변경 가능성 있음.
-		ArrayList<Member> members = MemberRepository.findAll();
-		for (Member member : members) {
+		// ArrayList<Member> members = MemberRepository.findAll();
+		// for (Member member : members) {
 
 
-			Voter voter = new Voter();
-			voter.setVoteId(data.getId());
-			voter.setUserid(member.getUserid());
-			voter.setState(0);
+		// 	Voter voter = new Voter();
+		// 	voter.setVoteId(data.getId());
+		// 	voter.setUserid(member.getUserid());
+		// 	voter.setState(0);
 
-			voterRepository.saveAndFlush(voter);
+		// 	voterRepository.saveAndFlush(voter);
 
-		}
+		// }
 		
 		
 		return "redirect:/vote";
@@ -291,17 +322,19 @@ public class VoteController {
 			JSONObject item = new JSONObject();
 			item.put("name", candidateList.get(i).getName());
 			item.put("img",candidateList.get(i).getImg());
+			item.put("info",candidateList.get(i).getInfo());
 			array.add(item);
 		}
 		JSONObject voteInfo = new JSONObject();
 		Vote vote = voteRepository.findById(voteId);
 		voteInfo.put("title",vote.getTitle());
 
-		Program program = programJpaRepository.findById(vote.getProgram_id());
+		Program program = programJpaRepository.findById(vote.getProgramId());
 
 		JSONObject date = new JSONObject();
-		date.put("startTime", vote.getStartTime());
-		date.put("endTime", vote.getEndTime());
+		date.put("startTime", vote.getLongStartTime());
+		date.put("endTime", vote.getLongEndTime());
+		date.put("resultShowTime", vote.getLongResultShowTime());
 
 		JSONArray result = new JSONArray();
 		result.add(0, array);
@@ -317,53 +350,73 @@ public class VoteController {
 	@ResponseBody
 	public JSONObject selectVote(@PathVariable("voteId") int voteId,
 		@RequestBody JSONObject axiosData,
-		Principal user
+		Principal user,@Nullable Authentication authentication
 	){
-		// System.out.println(axiosData.get("select"));  // 사용자가 뽑은 사람의 번호
+
+		// @Nullable Authentication authentication
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		
+
+		System.out.println(axiosData.get("select"));  // 사용자가 뽑은 사람의 번호
 		JSONObject result = new JSONObject();
 
-		Voter voter = voterRepository.findByVoteIdAndUserId(voteId, user.getName());
+		// 처음 투표하는 사람인지 확인하기 위한 voter
+		Voter voter = voterRepository.findByVoteIdAndMemberId(voteId, userDetails.getR_ID());
+
+		if(voter== null){// 처음 투표한 경우.
+			Voter voter2 = new Voter();
+			voter2.setMemberId(userDetails.getR_ID());
+			voter2.setState(0);
+			voter2.setVoteId(voteId);
+			voterRepository.saveAndFlush(voter2);
+		}
+
+		// 밑에서 조건문에 사용하고 업데이트 하는 변수 voter3
+		Voter voter3 = voterRepository.findByVoteIdAndMemberId(voteId, userDetails.getR_ID());
+		
+
 		Vote vote = voteRepository.findById(voteId);
 		String nowTime = getNowTime();
 		if(!(Long.parseLong(nowTime) >= vote.getLongStartTime() && Long.parseLong(nowTime)<vote.getLongEndTime())){
 			result.put("message","해당 투표는 현재 진행중이지 않습니다.");
 		}
-		else if(voter != null){// 유권자일 경우
-			if (voter.getState() !=1){// 처음 투표한 경우.
-				// 여기에 Klaytn 소스 넣기.
-				// int id  = Integer.parseInt(axiosData.get("select"));
-				
-				// klaytn.klaytnSend(vote.getAddress(), 1);
-				
-				
-				ExecutorService es = Executors.newCachedThreadPool();
-        
-				es.execute(() -> {
-					try {
-						// JSONObject message = klaytn.klaytnSend(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()));							
-						JSONObject message = klaytn.klaytnSend2(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()),Long.parseLong(nowTime));							
-						
-						voter.setState(1);
-						voter.setHash(message.get("hash").toString());
-						voterRepository.saveAndFlush(voter);//투표 완료.
-						// result.put("hash",message.get("message").toString());
-					} catch (Exception e) {
-						System.out.println("클레이튼 오류 발생: 클레이튼으로 선택 사항 전달&처리에서 문제발생.");						
-					}
-				});				
+		else if(vote.getVoteCanNum() > voter3.getState()){// 투표가 가능하면
+			
+			System.out.println(voter3.getState());
+			ExecutorService es = Executors.newCachedThreadPool();
+	
+			es.execute(() -> {
+				try {
 
-				result.put("message","투표 참여에 성공하였습니다.");
-				// result.put("hash",message.get("hash"));
-			}else{// 이미 투표에 참여한 경우
-				result.put("errorMessage","이미 참여한 투표입니다.");	
-			}
-		}else{// 유권자가 아닐 경우	
-			result.put("errorMessage","투표할 권한이 없습니다.");
+					JSONObject message = klaytn.klaytnSend2(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()),Long.parseLong(nowTime));							
+					
+					VoterHash voterHash = new VoterHash();
+					voterHash.setMemberId(userDetails.getR_ID());
+					voterHash.setVoteId(voteId);
+					voterHash.setVoterId(voter3.getId());
+					voterHash.setHash(message.get("hash").toString());
+
+					voter3.setState(voter.getState()+1);
+					
+					voterRepository.saveAndFlush(voter3);//투표 완료.
+					voterHashRepository.saveAndFlush(voterHash);
+					
+				} catch (Exception e) {
+					System.out.println("클레이튼 오류 발생: 클레이튼으로 선택 사항 전달&처리에서 문제발생.");						
+				}
+			});				
+
+			result.put("message","투표 참여에 성공하였습니다.");
+			// result.put("hash",message.get("hash"));
+		}else{// 이미 투표에 참여한 경우
+			result.put("errorMessage","이미 투표를 완료했습니다.");	
 		}
+		
 
 		
 
 		return result;
+		
 	}
 
 
@@ -390,15 +443,35 @@ public class VoteController {
         }
 
 		JSONArray json = new JSONArray();
-		
-		try {
-			// JSONObject result = klaytn.load(vote.getAddress());
-			JSONObject result = klaytn.load2(vote.getAddress());
-			System.out.println("result: " +result);
-			json.add(0, result);
+		Long nowTime = Long.parseLong(getNowTime());
 
+		if(vote.getLongEndTime() > nowTime){// 진행중일 때,
+			if(vote.getShowState() != 0){ 		// 0 or 1   0 이면 실시간 결과 보여주고, 1 이면 안보여줌
+				json.add(0,"");
+				json.add(1,"");
+				json.add(2,"");
+				json.add(3,"");
+				json.add(4,"1");
+				return json;
+			}
+				
+		}else if(vote.getLongResultShowTime()> nowTime){// 투표 결과 공개시간이 아직 되지 않은 경우.
+				json.add(0,"");
+				json.add(1,"");
+				json.add(2,"");
+				json.add(3,"");
+				json.add(4,"1");
+				return json;
+		}
+
+		try {
+			JSONObject result = klaytn.load2(vote.getAddress());   // 블록체인 소스 추가해서, 투표 결과 시간 에 맞게.
+			System.out.println("result: " +result);
+			json.add(0, result.get("result"));
 			json.add(1,vote.getCount());
 			json.add(2,names);
+			json.add(3,result.get("count"));
+			// json.add(4,vote.getShowState());
 			System.out.println("result json -------:"+json);
 			
 		} catch (Exception e) {

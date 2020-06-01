@@ -9,10 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface VoterJpaRepository extends JpaRepository<Voter,String>{
 
     public Voter findByVoteId(int voteId);
-    public Voter findByUserId(String userId);
+    public Voter findByMemberId(int memberId);
     
 
-    public Voter findByVoteIdAndUserId(int voteId,String userId);
+    public Voter findByVoteIdAndMemberId(int voteId, int memberId);
 
     // public Voter findById(int id);
     public ArrayList<Voter> findAll();

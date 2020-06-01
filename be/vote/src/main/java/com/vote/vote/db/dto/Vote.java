@@ -25,8 +25,8 @@ public class Vote{
     @Column(nullable=false)
     private String title;
 
-    @Column(nullable=false)
-    private String writer;
+    @Column(name="r_id",nullable=false)
+    private int memberId;
 
     @Column(nullable=true)
     private String address;
@@ -34,16 +34,28 @@ public class Vote{
     @Column
     private int count;
 
-    @Column(name="starttime", nullable=true)
+    @Column(name="starttime", nullable=false)
     private String startTime;
-    @Column(name="endTime", nullable=true)
+    @Column(name="endTime", nullable=false)
     private String endTime;
 
     @Column
     private String thumbNail;
 
-    @Column(nullable=true)
-    private int program_id;
+    @Column(name="program_id",nullable=false)
+    private int programId;
+
+    @Column(nullable=false)
+    private int selectNum;
+
+    @Column(nullable=false)
+    private int voteCanNum;
+
+    @Column(nullable=false)
+    private int showState;
+
+    @Column(name="resultshowtime", nullable =false)
+    private String resultShowTime;
 
 
     public int getId(){
@@ -53,9 +65,7 @@ public class Vote{
     public String getTitle(){
         return title;
     }
-    public String getWriter(){
-        return writer;
-    }
+
     public String getAddress(){
         return address;
     }
@@ -71,9 +81,7 @@ public class Vote{
     public String getThumbnail(){
         return thumbNail;
     }
-    public int getProgram_id(){
-        return this.program_id;
-    }
+
     public Long getLongStartTime(){
         return Long.parseLong(this.startTime.replaceAll("[^0-9]",""));
     }
@@ -87,9 +95,7 @@ public class Vote{
     public void setTitle(String title){
         this.title = title;
     }
-    public void setWriter(String writer){
-        this.writer = writer;
-    }
+
     public void setAddress(String address){
         this.address = address;
     }
@@ -105,8 +111,58 @@ public class Vote{
     public void setThumbnail(String thumbNail){
         this.thumbNail = thumbNail;
     }
-    public void setProgram_id(int program_id){
-        this.program_id = program_id;
+
+
+    public int getSelectNum() {
+        return selectNum;
+    }
+
+    public void setSelectNum(int selectNum) {
+        this.selectNum = selectNum;
+    }
+
+    public int getVoteCanNum() {
+        return voteCanNum;
+    }
+
+    public void setVoteCanNum(int voteCanNum) {
+        this.voteCanNum = voteCanNum;
+    }
+
+    public int getShowState() {
+        return showState;
+    }
+
+    public void setShowState(int showState) {
+        this.showState = showState;
+    }
+
+
+    public String getResultShowTime() {
+        return resultShowTime;
+    }
+    public Long getLongResultShowTime() {
+        return Long.parseLong(this.resultShowTime.replaceAll("[^0-9]",""));
+    }
+
+    public void setResultShowTime(String resultShowTime) {
+        this.resultShowTime = resultShowTime;
+    }
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
+    }
+
+    public int getProgramId() {
+        return programId;
+    }
+
+    public void setProgramId(int programId) {
+        this.programId = programId;
     }
 
 }

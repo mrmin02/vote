@@ -42,6 +42,7 @@
     "axios": "^0.19.2",
     "bit": "^1.0.20",
     "bootstrap": "^4.4.1",
+    "jquery": "^3.5.1",
     "react": "^16.0.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.0.0"

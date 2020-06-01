@@ -40,7 +40,8 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         // 		.build();
         
         CustomUserDetails user2 = new CustomUserDetails();
-        user2.setID(entityUser.getUserid());
+        user2.setR_ID(entityUser.getNo());
+        user2.setID(entityUser.getUserid());// principal 의 getName
         user2.setPASSWORD(entityUser.getPassword());
         user2.setIMG(entityUser.getProfile());
         user2.setNAME(entityUser.getName());

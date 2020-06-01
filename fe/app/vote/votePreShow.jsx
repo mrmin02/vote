@@ -25,7 +25,7 @@ class VoteShow extends React.Component {
             if (vote.name != 0){
                 return (
                     <div key={vote.name+index} className="card_div"> 
-                        <ItemCard2 key={vote.img} img={vote.img} name={vote.name}/>
+                        <ItemCard2 key={vote.img} img={vote.img} name={vote.name} info={vote.info}/>
                     </div>
                 )
             }
@@ -37,9 +37,10 @@ class Show extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신"}, date:{startTime:"000",endTime:"0000"}};
+        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신",info:"설명"}, date:{startTime:"000",endTime:"0000",resultShowTime:"0000"}};
         this.stTime;
         this.edTime;
+        this.rsTime; // 투표 집계공개 시간
     }
 
     async componentDidMount(){
@@ -51,13 +52,18 @@ class Show extends React.Component{
         
     }
     setDate(){
-        console.log("set")
-        var start = this.state.date.startTime;
-        var end = this.state.date.endTime;
-
-        this.stTime = start.substr(0,4)+"-"+start.substr(4,2)+"-"+start.substr(6,2)+" "+start. substr(8,2)+":"+start.substr(10,2);
+        
+        var start = String(this.state.date.startTime);
+        var end = String(this.state.date.endTime);
+        var resultShow = String(this.state.date.resultShowTime);
+        
+        // console.log(typeof(start));
+        this.stTime = start.substr(0,4)+"-"+start.substr(4,2)+"-"+start.substr(6,2)+" "+start.substr(8,2)+":"+start.substr(10,2);
         this.edTime = end.substr(0,4)+"-"+end.substr(4,2)+"-"+end.substr(6,2)+" "+end. substr(8,2)+":"+end.substr(10,2);
-        console.log("stTime: "+this.stTime+"\n"+"edTime: "+this.edTime);
+        this.rsTime = resultShow.substr(0,4)+"-"+resultShow.substr(4,2)+"-"+resultShow.substr(6,2)+" "+resultShow. substr(8,2)+":"+resultShow.substr(10,2);
+
+        
+        
     }
     render(){
         const {title} = this.state.title
@@ -78,15 +84,16 @@ class Show extends React.Component{
                         <ItemCard3 img={this.state.program.img}title={this.state.program.name}/>
                         </div>                    
                         <div className="info">
-                            <div className="div_center">프로그램 소개</div>
-                            <div>소개내용을 추가하세요</div>
+                            <div className="div_center textColor">★☆프로그램 소개☆★</div>
+                            <div>{this.state.program.info}</div>
                         </div>
                     </div>
                     <div className="text_center br_div">투표기간</div>
                     <div className="text_center">시작: {this.stTime}</div>
                     <div className="text_center">마감: {this.edTime}</div>
+                    <div className="text_center">집계공개: {this.rsTime}</div>
                     <div className="candidate">&lt;&lt; 후보 정보 &gt;&gt;</div>
-                    <div className="candidate_op">**후보 클릭 시 관련 정보로 이동**</div>
+                    <div className="candidate_op">★☆후보 클릭 시 관련 정보로 이동☆★</div>
                     <div className="cards">
                         <VoteShow votes={this.state.votes} />   
                     </div>

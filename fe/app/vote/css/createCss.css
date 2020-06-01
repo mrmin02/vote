@@ -1,0 +1,101 @@
+.input_name{
+    display: block;
+}
+.textArea{
+    display: block;
+}
+.table{
+    border-spacing: 15px;
+}
+.candidateItem{
+    margin: 15px 0px;
+}
+.candidate{
+    display: inline-block;
+    margin-left: 15px;
+}
+.candidateTable{
+    border: 1px solid gray;
+    display: inline;
+    padding: 15px;
+    border-radius: 15px;
+}
+
+#voteCreate{
+    width: 80%;
+    margin: auto;
+}
+.inputTextRight{
+    text-align: right;
+}
+.candidateItem{
+    display: grid;
+    grid-template-columns: 100px 580px;
+    column-gap:15px;
+}
+.imgDiv{
+    width: 100px;
+    height: 100px;
+}
+.candidateImg{
+    width: 100%;
+    border-radius: 15px;
+}
+.candidateInfo{
+    width: 410px;
+    min-height:60px;
+}
+.tag{
+    display: inline;
+    padding: 7px;
+    border-radius: 8px;
+    background-color: gray;
+    color: white;
+}
+.tagInput{
+    width: 350px;
+    margin-left: 10px;
+}
+.grid{
+    display: grid;
+    margin-bottom: 10px;
+}
+.roundGrid{
+    display: grid;
+    grid-template-columns: 100px 430px;
+    margin-left: 10px;
+
+}
+.roundInfo{
+    border: 1px solid gray;
+    border-radius: 15px;
+    padding: 15px;
+}
+.roundTextArea{
+    width: 390px;
+    min-height: 75px;
+}
+.Notification{
+    margin: 10px 0px;
+    color: red;
+    font-weight: 800;
+    font-size: large;
+    text-align: center;
+}
+.formButton{
+    text-align: center;
+    margin: 15px 0px;
+}
+.formButton button{
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+.formButton button:nth-child(1){
+    background-color: #5882FA;
+    color: white;
+}
+
+.inputWidth{
+    width: 50px;
+}

@@ -22,15 +22,11 @@ public class Voter{
     @Column(name="voteid",nullable=false)
     private int voteId;
 
-    @Column(name="userid",nullable=false)
-    private String userId;
+    @Column(name="r_id",nullable=false)
+    private int memberId;
 
-    @Column(nullable=true)
+    @Column(nullable=false)
     private int state;
-
-    @Column(nullable=true)
-    private String hash;
-
 
     public int getId(){
         return id;
@@ -38,15 +34,11 @@ public class Voter{
     public int getVoteId(){
         return voteId;
     }
-    public String getUserId(){
-        return userId;
-    }
+
     public int getState(){
         return state;
     }
-    public String getHash(){
-        return hash;
-    }
+
 
     public void setId(int id){
         this.id = id;
@@ -54,15 +46,20 @@ public class Voter{
     public void setVoteId(int voteId){
         this.voteId = voteId;
     }
-    public void setUserid(String userId){
-        this.userId = userId;
-    }
+
     public void setState(int state){
         this.state = state;
     }
-    public void setHash(String hash){
-        this.hash = hash;
+
+    public int getMemberId() {
+        return memberId;
     }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
+    }
+
+
 
 
 }

@@ -13,7 +13,7 @@ class ItemCard2 extends Component{
                 <Card
                     image={'/uploads/'+this.props.img}
                     title={this.props.name}
-                    text=' 설명 입니다. asdfsad fsdfsdaf sfasdf sdafsda fsadfdsa fdsafsdafsdafasd'
+                    text={this.props.info}
                 />
             </div>
         )

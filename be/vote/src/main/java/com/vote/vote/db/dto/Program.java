@@ -26,6 +26,8 @@ public class Program {
     @Column(name="p_category", nullable=false)
     private String category;
     
+    @Column(name="p_info", nullable=true)
+    private String info;
 
     public int getId() {
         return id;
@@ -57,6 +59,14 @@ public class Program {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
 

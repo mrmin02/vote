@@ -28,7 +28,7 @@ class VoteShow extends React.Component {
                 return (
                     <div key={vote.name+index} className="card_div" > 
                         {/* <ItemCard key={vote.img} img={vote.img} name={vote.name} event={this.sendSelect.bind(this,index)}/>   */}
-                        <ItemCard2 key={vote.img} img={vote.img} name={vote.name}/>
+                        <ItemCard2 key={vote.img} img={vote.img} name={vote.name} result={this.props.data.data[index]} count={this.props.data.count}/>
                     </div>
                 )
             }
@@ -40,9 +40,11 @@ class Show extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신"}, date:{startTime:"000",endTime:"0000"}};
+        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신"}, date:{startTime:"000",endTime:"0000",resultShowTime:"0000"}};
         this.stTime;
         this.edTime;
+        this.rsTime;
+        this.voteData = {data:[],count:0}
     }
 
     async componentDidMount(){
@@ -53,15 +55,22 @@ class Show extends React.Component{
         
     }
     setDate(){
-        console.log("set")
-        var start = this.state.date.startTime;
-        var end = this.state.date.endTime;
-
-        this.stTime = start.substr(0,4)+"-"+start.substr(4,2)+"-"+start.substr(6,2)+" "+start. substr(8,2)+":"+start.substr(10,2);
+        var start = String(this.state.date.startTime);
+        var end = String(this.state.date.endTime);
+        var resultShow = String(this.state.date.resultShowTime);
+        
+        
+        this.stTime = start.substr(0,4)+"-"+start.substr(4,2)+"-"+start.substr(6,2)+" "+start.substr(8,2)+":"+start.substr(10,2);
         this.edTime = end.substr(0,4)+"-"+end.substr(4,2)+"-"+end.substr(6,2)+" "+end. substr(8,2)+":"+end.substr(10,2);
-        console.log("stTime: "+this.stTime+"\n"+"edTime: "+this.edTime);
+        this.rsTime = resultShow.substr(0,4)+"-"+resultShow.substr(4,2)+"-"+resultShow.substr(6,2)+" "+resultShow. substr(8,2)+":"+resultShow.substr(10,2);
+    }
+    onSubmitVoteResult(data){
+        console.log("데이터 받음")
+        this.voteData = {data: data.data, count: data.count}
+        this.forceUpdate()
     }
     render(){
+        console.log("render")
         const {title} = this.state.title
         this.setDate();
         return(
@@ -78,6 +87,7 @@ class Show extends React.Component{
                     <div className="text_center br_div">투표기간</div>
                     <div className="text_center">시작: {this.stTime}</div>
                     <div className="text_center">마감: {this.edTime}</div>
+                    <div className="text_center">집계공개: {this.rsTime}</div>
                 </div>
                 
 
@@ -86,13 +96,13 @@ class Show extends React.Component{
                         <div className="candidate">&lt;&lt; 후보 정보 &gt;&gt;</div>
                         <div className="candidate_op">★☆마감된 투표입니다.☆★</div>
                         <div className="cards">
-                            <VoteShow votes={this.state.votes}/>   
+                            <VoteShow votes={this.state.votes} data={this.voteData}/>   
                         </div>
                     </div>        
                     <div className="right_div_box">
                     <div className="show_result">★☆마감 결과☆★</div>
                         <div className="vote_result">
-                            <VoteResult/>
+                            <VoteResult event={this.onSubmitVoteResult.bind(this)}/>
                         </div>
                     </div>
                 </div>

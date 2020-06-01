@@ -28,6 +28,8 @@ public class Candidate{
     @Column(nullable=false)
     private String img;
 
+    @Column(nullable=true)
+    private String info;
 
 
     public int getId(){
@@ -54,6 +56,14 @@ public class Candidate{
     }
     public void setImg(String img){
         this.img = img;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
 

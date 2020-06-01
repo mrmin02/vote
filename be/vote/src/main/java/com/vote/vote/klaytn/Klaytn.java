@@ -535,6 +535,7 @@ public class Klaytn {
 
 		JSONObject json = new JSONObject();
 		json.put("result",remoteCall.send());
+		json.put("count",eeToken.getCount().send());
 		return json;
 	}
 }

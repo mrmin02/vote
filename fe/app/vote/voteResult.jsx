@@ -34,13 +34,20 @@ class VoteResult extends Component {
         super(props);
         console.log("VoteResult : constructor")
         this.state = { data:{} }       
+        this.show = 0;
+        this.send = {data:{},count:0}
     }
     
     async componentDidMount(){
         console.log("VoteResult : componentDidMount")
         const {data: json} =  await axios.get('/vote/result/axios/'+param);
 
-        console.log("--------------------"+json[0]["result"]);
+        if(json[4] == 1){
+            console.log("결과 공개 X")
+            return this.show= 1;
+        }
+            
+        console.log("--------------------"+json[0]);
         console.log("---------------------2"+json[2]);
         // json[0]["result"].map(num=>{
         //     switch ( num ) {
@@ -68,14 +75,21 @@ class VoteResult extends Component {
 
         for(var i = 0; i<json[1]; i++){
             // data.datasets[0].data.push(dataStore.vote[i+1]);
-            data.datasets[0].data.push(json[0]["result"][i]);
+            data.datasets[0].data.push(json[0][i]);
             data.labels.push(title[i]);
         }
 
         // this.state.title = dataStore.title
         // this.state.data = dataStore.data
+        if(this.props.event){
+            this.send = {data:json[0], count:json[3]}
+            this.props.event(this.send);
+        }
+        
+        
 
         this.setState({data})
+        console.log("data:"+this.state)
     }
 
     render() {
@@ -83,25 +97,37 @@ class VoteResult extends Component {
         console.log("this.state: "+this.state.data)
         const {data} = this.state;
         console.log(data);
+
+        console.log(this.show)
+        if(this.show == 1){
+            return(
+                <div>투표 결과가 공개되지 않았습니다.</div>
+            )
+        }
         return(
             <div>
                 <CircleChart data={data} />
+                { !this.data ? (
+                    <div>투표 데이터가 없습니다.</div>
+                ):(
+                    <div></div>
+                )}
             </div>
         )
       }
 }
-class Result extends Component{
-    render(){
-        return(
-            <div>
-                <a href="/vote">목록</a>
-                실시간 투표 결과
-                <br/><br/><br/>
-                <VoteResult/>
-            </div>
-        )
-    }
-}
+// class Result extends Component{
+//     render(){
+//         return(
+//             <div>
+//                 <a href="/vote">목록</a>
+//                 실시간 투표 결과
+//                 <br/><br/><br/>
+//                 <VoteResult/>
+//             </div>
+//         )
+//     }
+// }
 
 
 // ReactDOM.render(<Result/>,document.getElementById('voteResult'));
