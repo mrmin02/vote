@@ -32,3 +32,14 @@
     /* margin-left: 100% !important; */
     left : 50px !important;
 }
+
+.list_a_tag a:focus, .list_a_tag a:hover{
+    color: white !important;
+}
+*, ::after, ::before{
+    webkit-box-sizing: unset !important;
+    box-sizing: unset !important;
+}
+.top_div a:focus,.top_div a:hover{
+    color : white !important;
+}
