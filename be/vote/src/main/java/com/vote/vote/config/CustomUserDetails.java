@@ -16,6 +16,8 @@ public class CustomUserDetails implements UserDetails{
     private String IMG;
 	private String AUTHORITY;
 	private boolean ENABLED;
+	private String GENDER;
+	private String BIRTH;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -83,5 +85,21 @@ public class CustomUserDetails implements UserDetails{
 
 	public void setR_ID(int r_ID) {
 		R_ID = r_ID;
+	}
+
+	public String getGENDER() {
+		return GENDER;
+	}
+
+	public void setGENDER(String gENDER) {
+		GENDER = gENDER;
+	}
+
+	public String getBIRTH() {
+		return BIRTH;
+	}
+
+	public void setBIRTH(String bIRTH) {
+		BIRTH = bIRTH;
 	}
 }

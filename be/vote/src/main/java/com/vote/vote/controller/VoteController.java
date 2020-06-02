@@ -24,6 +24,8 @@ import com.vote.vote.repository.VoterHashJpaRepository;
 import com.vote.vote.repository.VoterJpaRepository;
 import com.vote.vote.service.StorageService;
 
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,7 +206,6 @@ public class VoteController {
 		// string 에서 숫자만 추출   기본 값: 년-월-일T시:분
 		String startTime_set = startTime.replaceAll("[^0-9]","");
 		String endTime_set = endTime.replaceAll("[^0-9]","");
-		// String resultShowTime_set = resultShowTime.replaceAll("[^0-9]","");
 
 		data.setTitle(title);
 		data.setMemberId(userDetails.getR_ID());
@@ -237,7 +238,7 @@ public class VoteController {
         es.execute(() -> {
             try {
 				// JSONObject json = klaytn.klaytnDeploy();
-				JSONObject json = klaytn.klaytnDeploy2();// 스마트 컨트렉트 배포
+				JSONObject json = klaytn.klaytnDeploy3();// 스마트 컨트렉트 배포
 				
 				System.out.println(json);
 				data.setAddress(json.get("address").toString());
@@ -248,7 +249,13 @@ public class VoteController {
 					//resultShowTime  결과 공개 시간 and showState 를 포함시킨걸로 새로 만들어야 함.
 
 				//스마트 컨트랙트 배포후에 투표 시작시간, 끝 시간 세팅
-				JSONObject json2 = klaytn.klaytnSetOptions(json.get("address").toString(), Long.parseLong(startTime_set), Long.parseLong(endTime_set), count);
+				// String address, long startTime, long endTime, int limit, int state, long resultShowTime
+				JSONObject json2 = klaytn.klaytnSetOptions2(
+					json.get("address").toString(), 
+					Long.parseLong(startTime_set), 
+					Long.parseLong(endTime_set), 
+					count
+				);
 				System.out.println(json2);
 
             } catch (Exception e) {
@@ -377,6 +384,9 @@ public class VoteController {
 
 		Vote vote = voteRepository.findById(voteId);
 		String nowTime = getNowTime();
+
+
+
 		if(!(Long.parseLong(nowTime) >= vote.getLongStartTime() && Long.parseLong(nowTime)<vote.getLongEndTime())){
 			result.put("message","해당 투표는 현재 진행중이지 않습니다.");
 		}
@@ -387,8 +397,47 @@ public class VoteController {
 	
 			es.execute(() -> {
 				try {
+					System.out.println("----------------------------------------1");
+					int age = 2; 
+					if(!userDetails.getBIRTH().equals("2")){ ////19990122....
+						System.out.println(userDetails.getBIRTH());
+						int y = Integer.parseInt(nowTime.substring(0, 4));
+						int m = Integer.parseInt(nowTime.substring(4, 6));
+						int d = Integer.parseInt(nowTime.substring(6, 8));
+						System.out.println("----------------------------------------1.5");
+						
+						String[] cut = userDetails.getBIRTH().split(" ");
+						String[] birth = cut[0].split("-");
+						System.out.println("----------------------------------------1.7");
+						LocalDate birthdate = new LocalDate(
+							Integer.parseInt(birth[0]), 
+							Integer.parseInt(birth[1]), 
+							Integer.parseInt(birth[2])
+						);
+						System.out.println("----------------------------------------2");
+						LocalDate now = new LocalDate(
+							y, 
+							m, 
+							d
+						); 
+						Years nowAge = Years.yearsBetween(birthdate, now);
+						age = nowAge.getYears()/10;
+					}
+					System.out.println("----------------------------------------3");
+					if(age <= 0)
+						age = 2;
+					else if (age > 5)
+						age = 5;
 
-					JSONObject message = klaytn.klaytnSend2(vote.getAddress(), Integer.parseInt(axiosData.get("select").toString()),Long.parseLong(nowTime));							
+					System.out.println("----------------------------------------4");
+					// String address, long time, int age, int gender, int select
+					JSONObject message = klaytn.klaytnSend3(
+						vote.getAddress(), 
+						Long.parseLong(nowTime),
+						age,
+						Integer.parseInt(userDetails.getGENDER()),
+						Integer.parseInt(axiosData.get("select").toString())
+					);							
 					
 					VoterHash voterHash = new VoterHash();
 					voterHash.setMemberId(userDetails.getR_ID());
@@ -465,17 +514,23 @@ public class VoteController {
 		}
 
 		try {
-			JSONObject result = klaytn.load2(vote.getAddress());   // 블록체인 소스 추가해서, 투표 결과 시간 에 맞게.
+			JSONArray result = klaytn.load3(vote.getAddress());   // 블록체인 소스 추가해서, 투표 결과 시간 에 맞게.
 			System.out.println("result: " +result);
-			json.add(0, result.get("result"));
-			json.add(1,vote.getCount());
-			json.add(2,names);
-			json.add(3,result.get("count"));
-			// json.add(4,vote.getShowState());
-			System.out.println("result json -------:"+json);
+			// System.out.println(result.get("result"));
+			// json.add(0, result.);
+			// json.add(1,vote.getCount());
+			// json.add(2,names);
+			// json.add(3,result.get("count"));
+			// // json.add(4,vote.getShowState());
+			// System.out.println("result json -------:"+json);
+			// 	json.add(0,"");
+			// 	json.add(1,"");
+			// 	json.add(2,"");
+			// 	json.add(3,"");
+			// 	json.add(4,"1");
 			
 		} catch (Exception e) {
-			System.out.println("클레이튼 오류 발생: 결과 출력 오류");
+			System.out.println("클레이튼 오류 발생: 결과 출력 오류\n"+e.getMessage());
 		}
 
 		return json;

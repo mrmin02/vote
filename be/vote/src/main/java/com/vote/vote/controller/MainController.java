@@ -1,8 +1,9 @@
 package com.vote.vote.controller;
 
-import java.security.Principal;
+import com.vote.vote.config.CustomUserDetails;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.lang.Nullable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,11 +12,8 @@ public class MainController {
 
 	@RequestMapping("/")
 	public String index() {
-		// System.out.println("/ --> index");
-		// if(user != null){
-		// 	// UserDetails u = (UserDetails)user;
-		// 	System.out.println(u);
-		// }
+
+			
 		return "main_index";
 	}
 	// @RequestMapping("/about")

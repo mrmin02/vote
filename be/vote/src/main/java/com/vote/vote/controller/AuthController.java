@@ -142,10 +142,22 @@ public class AuthController {
         user2.setID(userInfo.get("id").toString());
         user2.setPASSWORD(userInfo.get("id").toString());
         user2.setNAME(userInfo.get("name").toString());
+        
         if(userInfo.get("img")!=null){
             user2.setIMG(userInfo.get("img").toString());
         }else{
             user2.setIMG("/img/defaultProfile.png");
+        }
+
+        if(user.getGender() != null){
+            user2.setGENDER(member.getGender());
+        }else{
+            user2.setGENDER("0");
+        }
+        if(user.getBirth() != null){
+            user2.setBIRTH(member.getBirth());
+        }else{
+            user2.setBIRTH("2");
         }
         
         user2.setAUTHORITY("USER");
@@ -194,7 +206,7 @@ public class AuthController {
     @RequestMapping(value="/register", method=RequestMethod.POST)
     public String registerOk(Member mm, RedirectAttributes redirAttrs){
 
-        System.out.println("mm: "+mm);        
+        System.out.println("mm: "+mm.getBirth());        
 
         if(memberRepository.findByUserid(mm.getUserid()) == null){
 
