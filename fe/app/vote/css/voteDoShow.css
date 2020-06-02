@@ -43,3 +43,22 @@
 .top_div a:focus,.top_div a:hover{
     color : white !important;
 }
+.menu > a{
+    display: inline !important;
+}
+.dropMenu a{
+    display: block !important;
+}
+
+
+@media(max-width:700px){
+    .left_right_box{
+        /* display: grid; */
+        grid-template-columns: none;
+        /* column-gap:15px; */
+    }
+    #item{
+        /* width: 100% !important; */
+        border-right: none;
+    }
+}

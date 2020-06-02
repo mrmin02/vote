@@ -5,13 +5,44 @@ main {
     width: auto;
     min-height: 270px;
     margin: 100px;
+    /* margin-bottom: 50px; */
+    /* position: absolute;
+ 	left: 250px; */
     /* text-align: center; */
 /*    align 은 컨텐츠에 알맞게 수정*/
-margin-bottom: 50px;
+    
+}
+/* .test{
+	min-height: 270px;
+	width: 250px;
+    background-color:gray;
+    position: absolute;
+ 	left: 0;
+
+} */
+
+#page-content-wrapper{
+    margin-bottom: 100px;
+}
+
+/* #page-content-wrapper
+{
+    padding-left: 15px !important;
+} */
+*, ::after, ::before{
+    webkit-box-sizing:  content-box !important;
+    box-sizing:  content-box !important;
+}
+.top_div a:focus,.top_div a:hover{
+    color : white !important;
 }
 .menu > a{
     display: inline !important;
+    padding-left: 0px;
 }
 .dropMenu a{
     display: block !important;
+}
+.top_div{
+    padding-left: 0px !important;
 }

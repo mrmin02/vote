@@ -28,12 +28,13 @@ header .contents{
 top {
     display:block;
     position:fixed;
-    align-content: center;
+    align-content: center !important;
     text-align: right;
     width:100%;
-    background-color: rgba(66,103,178,1);
+    background-color: rgba(66,103,178,0.5);
     padding: 15px;
     z-index: 10;
+    
 }
 top .top_div{
     display: block;
@@ -132,7 +133,8 @@ main div.ani{
 }
 
 footer {
-/*    position: absolute;*/
+ /*    position: fixed;
+	bottom : 0;
     display: flex !important;
     
     justify-content: space-between;
@@ -141,7 +143,17 @@ footer {
     background-color: white;
     margin: auto;
     max-width: 1200px;
-    min-width: 800px;
+    //min-width: 1100px; */
+    
+
+    display: flex !important;
+    justify-content: space-between;
+    bottom : 0;
+    position:fixed;
+    width:100%;
+   background-color: rgba(255,255,255,1);
+    padding: 15px;
+    z-index: 5;
     
 }
 
@@ -220,13 +232,13 @@ nav div.dropMenuactive .drop {
 }
 
 
-contents{
-}
 contents div.contents{
-    max-width: 1200px;
+   max-width: 1200px;
     margin: auto;
+/*      min-height: 100px; */
 /*    background-color: aquamarine;*/
 }
+
 
 .img_div{
     position: absolute;
@@ -240,3 +252,5 @@ contents div.contents{
     border-radius: 30px;
     vertical-align: bottom;
 }
+
+.haveProgram{text-align: center;}  

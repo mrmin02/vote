@@ -99,3 +99,11 @@ body{
 .ivZCRl{
     width:300px !important;
 }
+
+
+@media(max-width:700px){
+    #program_info{
+        display: block;
+    }
+    
+}
