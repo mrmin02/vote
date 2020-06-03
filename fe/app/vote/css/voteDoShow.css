@@ -50,15 +50,16 @@
     display: block !important;
 }
 
+div.winner .sc-AxjAm {
+    background-color: #A9A9F5;
+}
+/* ivZCRl */
 
 @media(max-width:700px){
     .left_right_box{
-        /* display: grid; */
         grid-template-columns: none;
-        /* column-gap:15px; */
     }
     #item{
-        /* width: 100% !important; */
         border-right: none;
     }
 }

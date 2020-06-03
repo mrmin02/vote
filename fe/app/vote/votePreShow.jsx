@@ -37,7 +37,7 @@ class Show extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신",info:"설명"}, date:{startTime:"000",endTime:"0000",resultShowTime:"0000"}};
+        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신",info:"설명"}, date:{startTime:"000",endTime:"0000",resultShowTime:"0000",selectNum:0}};
         this.stTime;
         this.edTime;
         this.rsTime; // 투표 집계공개 시간
@@ -46,7 +46,7 @@ class Show extends React.Component{
     async componentDidMount(){
         let {data} = await axios.get('/vote/axios/'+param);
         console.log(data);
-        this.setState({votes : data[0], title : data[1], program:data[2], date: data[3]});
+        this.setState({votes : data[0], title : data[1], program:data[2], date: data[3], selectNum:data[4]});
         console.log(data);
 
         
@@ -92,6 +92,8 @@ class Show extends React.Component{
                     <div className="text_center">시작: {this.stTime}</div>
                     <div className="text_center">마감: {this.edTime}</div>
                     <div className="text_center">집계공개: {this.rsTime}</div>
+                    <div className="text_center">선발인원: {this.state.selectNum}&nbsp;명</div>
+                    <div className="text_center show_result">★☆공동 우승자가 있을 경우 우승인원이 선발인원보다 많아 질 수 있습니다.☆★</div>
                     <div className="candidate">&lt;&lt; 후보 정보 &gt;&gt;</div>
                     <div className="candidate_op">★☆후보 클릭 시 관련 정보로 이동☆★</div>
                     <div className="cards">

@@ -105,6 +105,8 @@ public class Klaytn {
 		// 자바에선 16 비트 ? 로 바꿔서 길이가 63 ? 64 인데 , bytes32 에서는 길이를 32 까지 허용하니, 길이 오류가 남.
 		
 		// 파라메터 1 : 1: klay ? gass , 2: nowTime,   3:age, 4: gender, last: Seleted
+
+		System.out.println("----------------------------------------send");
 		Function function = new Function(
 			RIROVote3.FUNC_TRANSFERWITHDATA,  // FUNC_TRANSFER = "transfer"
 		        Arrays.asList(
@@ -124,6 +126,8 @@ public class Klaytn {
 		TransactionManager txManager = new TransactionManager.Builder(caver, sender)
                 .setChaindId(ChainId.BAOBAB_TESTNET).build();
 		
+		System.out.println("----------------------------------------send 1");
+
 		SmartContractExecutionTransaction smartContractExecutionTransaction
 			= SmartContractExecutionTransaction.create(
 				sender.getAddress(),//만드는 User 의 address
@@ -137,13 +141,16 @@ public class Klaytn {
 		System.out.println("smartContractExecutionTransaction:" +smartContractExecutionTransaction);
 		String rawTransaction
 		        = txManager.sign(smartContractExecutionTransaction, true).getValueAsString();
-		
+				System.out.println("----------------------------------------send 2");
 		KlayCredentials feePayer = KlayCredentials.create("0xe6dde3422998e00bbd13002e1396388d9b0e4f6ab3de630ce8167ff2c99057f2");// 수수료 부담하는 사람의 private key
 		FeePayerManager feePayerManager
 		        = new FeePayerManager.Builder(caver, feePayer)
 		        		.build();
 //			                .setChainId(ChainId.BAOBAB_TESTNET).build();
 		//Sync : FeePayer ExecuteTx
+
+		System.out.println("----------------------------------------send 3");
+
 		KlayTransactionReceipt.TransactionReceipt transactionReceipt 
 			= feePayerManager.executeTransaction(rawTransaction);
 		String errorMessage = transactionReceipt.getErrorMessage();
@@ -152,6 +159,7 @@ public class Klaytn {
 		System.out.println("txHash: "+txHash);
 		System.out.println("errorMessage : "+ errorMessage);
 
+		System.out.println("----------------------------------------send 4");
 		JSONObject json = new JSONObject();
 		json.put("hash",txHash);
 		return json;

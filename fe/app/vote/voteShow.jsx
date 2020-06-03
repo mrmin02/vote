@@ -38,7 +38,7 @@ class Show extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신"},date:{startTime:"000",endTime:"0000", resultShowTime:"0000"}};
+        this.state = { votes: [], title: "",program:{img:"검정고무신.png",name:"검정고무신"},date:{startTime:"000",endTime:"0000", resultShowTime:"0000",selectNum:0}};
         this.aa = "aaa";
         this.edTime;//종료 시간
         this.stTime;//현재시간, 타이머 시작 시간
@@ -52,7 +52,7 @@ class Show extends React.Component{
     async componentDidMount(){
         let {data} = await axios.get('/vote/axios/'+param);
         // console.log(data[0]);
-        this.setState({votes : data[0], title : data[1], program:data[2], date : data[3]});
+        this.setState({votes : data[0], title : data[1], program:data[2], date : data[3], selectNum:data[4]});
         console.log(data);
 
         this.edTime = this.parseTime();
@@ -60,10 +60,11 @@ class Show extends React.Component{
         this.rmTime = this.edTime - this.stTime;
         console.log("edTime:"+this.edTime+"\n"+"stTime: "+this.stTime+"\n"+"rmTime:"+this.rmTime)
         var that = this;
-        // this.rmTime=10000;
+        
         var interval  = setInterval(function(){
             that.timer(interval);
         },1000)
+        
         
     }
     parseTime(){
@@ -151,7 +152,9 @@ class Show extends React.Component{
                     <div className="text_center">시작: {this.divStTime}</div>
                     <div className="text_center">마감: {this.divEdTime}</div>
                     <div className="text_center">집계공개: {this.divRsTime}</div>
+                    <div className="text_center">선발인원: {this.state.selectNum}&nbsp;명</div>
                 </div>
+                <div className="text_center show_result">★☆공동 우승자가 있을 경우 우승인원이 선발인원보다 많아 질 수 있습니다.☆★</div>
                 <div className="left_right_box">
                     <div id="item">
                         <div className="candidate">&lt;&lt; 후보 정보 &gt;&gt;</div>
