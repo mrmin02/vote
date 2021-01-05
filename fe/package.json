@@ -41,7 +41,7 @@
     "@bit/react-bootstrap.react-bootstrap.internal.style-links": "^1.0.0",
     "@material-ui/core": "^4.9.14",
     "@material-ui/lab": "^4.0.0-alpha.53",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bit": "^1.0.20",
     "bootstrap": "^4.4.1",
     "jquery": "^3.5.1",
